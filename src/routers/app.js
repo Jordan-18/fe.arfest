@@ -1,48 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import test from '../views/test.vue'
-import Login from '../views/Auth/Login.vue'
-import Register from '../views/Auth/Register.vue'
+import * as Auth from '@/views/Auth/Route.js'
+import * as Route from '@/views/Contents/Route.js'
+import page404 from '@/views/Pages/page404.vue'
 
-const routes = [
-    { 
-        path: '/login', 
-        name: 'login', 
-        component: Login,
-        meta: {
-            title: 'Login',
-            requiresAuth: false,
-        }
-    },
-    { 
-        path: '/register', 
-        name: 'register', 
-        component: Register,
-        meta: {
-            title: 'Register',
-            requiresAuth: false,
-        }
-    },
-    { 
-        path: '/', 
-        name: 'home' ,
-        component: test,
-        meta: {
-            title: 'Halaman Utama',
-        }
-    },
-    { 
-        path: '/tes', 
-        name: 'test' ,
-        component: test,
-        meta: {
-            title: 'Halaman Utama',
-        }
-    },
+var routes = [
     {  
         path: '/:pathMatch(.*)', 
-        component: test 
+        component: page404,
+        meta: {
+            title: 'Page Not Found',
+        }
     },
 ]
+
+routes = [
+    ...Auth.route,
+    ...Route.route,
+    ...routes
+]
+
 
 const router = createRouter({
     history: createWebHistory(),

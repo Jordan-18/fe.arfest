@@ -65,14 +65,14 @@
                         <div class="d-flex align-items-center">
                             <div class="text-gray-400 fw-semibold fs-6 me-6">Or</div>
                             <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light me-3">
-                                <img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="p-4" />
+                                <img alt="Logo" src="@/assets/media/svg/brand-logos/google-icon.svg" class="p-4" />
                             </a>
                             <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light me-3">
-                                <img alt="Logo" src="assets/media/svg/brand-logos/facebook-3.svg" class="p-4" />
+                                <img alt="Logo" src="@/assets/media/svg/brand-logos/facebook-3.svg" class="p-4" />
                             </a>
                             <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light">
-                                <img alt="Logo" src="assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show p-4" />
-                                <img alt="Logo" src="assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show p-4" />
+                                <img alt="Logo" src="@/assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show p-4" />
+                                <img alt="Logo" src="@/assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show p-4" />
                             </a>
                         </div>
                     </div>
@@ -84,11 +84,13 @@
 </template>
 <script>
 import api from '@/api';
+import Cookies from 'js-cookie'
+import * as Helper from '@/helpers/helpers';
 export default {
     data(){
         return {}
     }, 
-    mounted(){},
+
     methods:{
         async Register(){
             try {
@@ -107,23 +109,21 @@ export default {
                 })
                 if(response.status == 200){
                     let loggedIn    = true
-                    let token_type  = response.data.data.token_type
-                    let token       = response.data.data.access_token
-                    let name        = response.data.data.user.name
-                    let email       = response.data.data.user.email
-                    let username    = response.data.data.user.username
+                    let loginData   = {
+                        token_type  : response.data.data.token_type,
+                        token       : response.data.data.access_token,
+                        name        : response.data.data.user.name,
+                        access      : response.data.data.user.user_access,
+                        email       : response.data.data.user.email,
+                        username    : response.data.data.user.username                 
+                    }
+                    loginData = Helper.encrypData(loginData)
 
-
-                    localStorage.setItem('loggedIn',loggedIn)
-                    localStorage.setItem('token_type',token_type)
-                    localStorage.setItem('token',token )
-                    localStorage.setItem('name',name)
-                    localStorage.setItem('email',email )
-                    localStorage.setItem('username',username)
-
-                    this.$router.push({ 
-                        path: '/' 
-                    })
+                    Cookies.set('loggedIn',loggedIn)
+                    Cookies.set('loginData',loginData)
+                    
+                    window.location.replace('/');
+                    
                     Swal.fire('Register Successfully')
                 }else{
                     Swal.fire('Something Wrong !')

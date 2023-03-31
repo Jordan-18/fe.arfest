@@ -9,7 +9,7 @@
 </template>
 
 <script>
-
+import Cookies from 'js-cookie';
 export default {
 	data() {
         return {
@@ -18,12 +18,9 @@ export default {
     },
   	computed: {
 		isLoginPage() {
-			let isLoginIn = localStorage.getItem('loggedIn') ?? false
+			let isLoginIn = Cookies.get('loggedIn') ?? false
 
 			if(isLoginIn){
-				this.$router.push({ 
-					path: '/' 
-				})
 				return isLoginIn
 			}else{
 				let middleware = this.$route.meta.requiresAuth ?? true
@@ -38,7 +35,7 @@ export default {
 			}
 			
 			this.num++
-		}
-	}
+		},
+	},
 };
 </script>

@@ -1,0 +1,13 @@
+import CryptoJS from 'crypto-js';
+
+const key = '6803d318176f17962941c9efc7da8448f36f8a3d9d77dd4bf886cd9c7bb1cd6f4c470911da65261a412a704301725e1afee037e9bf7027f6d32f8efa4875010c'
+
+export const encrypData = (data) => {
+    return CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
+}
+
+export const decrypData = (text) => {
+    const bytes = CryptoJS.AES.decrypt(text, key)
+    const plainText = bytes.toString(CryptoJS.enc.Utf8)
+    return JSON.parse(plainText);
+}
