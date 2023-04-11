@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
 export default {
 	data() {
         return {
@@ -18,7 +17,7 @@ export default {
     },
   	computed: {
 		isLoginPage() {
-			let isLoginIn = Cookies.get('loggedIn') ?? false
+			let isLoginIn = this.$cookies.get('loggedIn') ?? false
 
 			if(isLoginIn){
 				return isLoginIn

@@ -51,9 +51,6 @@
     </div>
 </template>
 <script>
-import api from '@/api';
-import Cookies from 'js-cookie'
-import * as Helper from '@/helpers/helpers';
 export default {
     data(){
         return {}
@@ -68,7 +65,7 @@ export default {
                     password: this.password,
                 }
 
-                const response = await api.post('/login', data, {
+                const response = await this.$api.post('/login', data, {
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -84,10 +81,10 @@ export default {
                         email       : response.data.data.user.email,
                         username    : response.data.data.user.username                 
                     }
-                    loginData = Helper.encrypData(loginData)
+                    loginData = this.$helper.encrypData(loginData)
 
-                    Cookies.set('loggedIn', loggedIn)
-                    Cookies.set('loginData', loginData)
+                    this.$cookies.set('loggedIn', loggedIn)
+                    this.$cookies.set('loginData', loginData)
 
                     window.location.replace('/');
 

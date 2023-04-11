@@ -1,9 +1,19 @@
 import Access from '@/views/Contents/Access/Access.vue'
 import Dashboard from '@/views/Contents/Dashboard/Dashboard.vue'
 import Menu from '@/views/Contents/Menu/Menu.vue'
+import Datatable from '@/components/Datatable.vue'
 
 export const route = 
 [
+    { 
+        path: '/access', 
+        name: 'access' ,
+        component: Access,
+        meta: {
+            title: 'Access',
+            breadcrumb : 'Access'
+        }
+    },
     { 
         path: '/access', 
         name: 'access' ,
@@ -28,6 +38,15 @@ export const route =
         meta: {
             title: 'Menu',
             breadcrumb: 'Menu'
+        }
+    },
+    { 
+        path: '/datatable', 
+        name: 'datatable' ,
+        component: Datatable,
+        meta: {
+            title: 'Datatable',
+            breadcrumb: 'Datatable'
         }
     },
 ]

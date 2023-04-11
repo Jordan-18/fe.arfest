@@ -5,8 +5,8 @@
             <img src="@/assets/media/avatars/300-1.jpg" alt="" />
         </div>
         <div class="text-center">
-            <a href="" class="text-gray-800 text-hover-primary fs-4 fw-bolder">Paul Melone</a>
-            <span class="text-gray-600 fw-semibold d-block fs-7 mb-1">Python Dev</span>
+            <a href="" class="text-gray-800 text-hover-primary fs-4 fw-bolder">Admin</a>
+            <span class="text-gray-600 fw-semibold d-block fs-7 mb-1">Pro Player</span>
         </div>
     </div>
 </div>
@@ -94,7 +94,7 @@
 
             </div>
 
-            <div data-kt-menu-trigger="click" class="menu-item here menu-accordion" :class="{'show' : ['/access','/menu'].includes(this.$route.path)}">
+            <div data-kt-menu-trigger="click" class="menu-item here menu-accordion" :class="{'show' : (['/access','/menu']).includes(this.$route.path)}">
                 <span class="menu-link">
                     <span class="menu-icon">
                         <span class="svg-icon svg-icon-5">
@@ -152,15 +152,10 @@
 </div>
 </template>
 <script>
-import api from '@/api';
-import * as Helper from '@/helpers/helpers';
-import Cookies from 'js-cookie';
-
 export default {
     data(){
         return {
-            dataAuth : Helper.decrypData(Cookies.get('loginData')),
-            menuAccess : (Cookies.get('menuData') ? Helper.decrypData(Cookies.get('menuData')) : []),
+            menuAccess : [],
             activeMenu : '/',
         }
     },
@@ -171,22 +166,20 @@ export default {
         
     },
     mounted(){
-        if(!Cookies.get('menuData')){
-            this.setMenu()
-        }
+        this.setMenu()
     },
     methods:{
         async setMenu(){
             try {
-                api.defaults.headers.common['Authorization'] = `${this.dataAuth.token_type} ${this.dataAuth.token}`;
-                const response = await api.get('/menuaccess/'+this.dataAuth.access,{
+                this.$api.defaults.headers.common['Authorization'] = `${this.$dataAuth.token_type} ${this.$dataAuth.token}`;
+                const response = await this.$api.get('/menuaccess/'+this.$dataAuth.access,{
                     headers: {
                         "Content-Type": "application/json",
                     },
                 })
                 let data = response.data.data[0].menu_by_access;
 
-                Cookies.set('menuData', Helper.encrypData(data))
+                // this.$cookies.set('menuData', this.$helper.encrypData(data))
                 this.menuAccess = data
 
             } catch (error) {
@@ -199,9 +192,11 @@ export default {
                 Swal.fire(message)
             }
         },
+
         isActive(endPoint){
             return this.$route.path == endPoint
         },
+
         onDataActive(data, data2 = []){
             let response =  data.map(menu => menu.menu_endpoint)
 
@@ -214,6 +209,7 @@ export default {
             
             return response.includes(this.$route.path)
         },
+
         Logout(){
             Swal.fire({
                 title: 'Logout',
@@ -226,9 +222,9 @@ export default {
             }).then((result) => {
             if (result.isConfirmed) {
 
-                Cookies.remove('loggedIn')
-                Cookies.remove('menuData')
-                Cookies.remove('loginData')
+                this.$cookies.remove('loggedIn')
+                this.$cookies.remove('menuData')
+                this.$cookies.remove('loginData')
 
                 window.location.replace('/login');
 
