@@ -1,126 +1,87 @@
 <template>
-  <div class="container">
-    <v-card>
-    <v-card-title>
-      Nutrition
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :search="search"
-    ></v-data-table>
-  </v-card>
-  </div>
+  <p>
+    <label for="showCheckBoxes">Checkboxes</label>
+    <input id="showCheckBoxes" type="checkbox" v-model="config.checkboxes" />
+
+    <label for="padding"> | Padding</label>
+    <input id="padding" type="number" v-model.number="config.padding" />
+
+    <label for="editable"> | Editable</label>
+    <input id="editable" type="checkbox" v-model="config.editable" />
+
+    <label for="disabled"> | Disabled</label>
+    <input id="disabled" type="checkbox" v-model="config.disabled" />
+
+    <label for="keyboardNavigation"> | Keyboard Navigation</label>
+    <input
+      id="keyboardNavigation"
+      type="checkbox"
+      v-model="config.keyboardNavigation"
+    />
+
+    <label for="DragandDrop"> | DragandDrop</label>
+    <input id="DragandDrop" type="checkbox" v-model="config.dragAndDrop" />
+
+    <label for="checkMode"> | Checkmode auto</label>
+    <input
+      id="checkMode"
+      type="checkbox"
+      :value="modeBool"
+      @input="changeMode"
+    />
+  </p>
+
+  <tree :config="config" :nodes="nodes"> </tree>
 </template>
+
 <script>
-  export default {
-    data () {
-      return {
-        search: '',
-        headers: [
-          {
-            align: 'start',
-            key: 'name',
-            sortable: false,
-            title: 'Dessert (100g serving)',
-          },
-          { key: 'calories', title: 'Calories' },
-          { key: 'fat', title: 'Fat (g)' },
-          { key: 'carbs', title: 'Carbs (g)' },
-          { key: 'protein', title: 'Protein (g)' },
-          { key: 'iron', title: 'Iron (%)' },
-        ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: 1,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: 1,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: 7,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: 8,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: 16,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: 0,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: 2,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: 45,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: 22,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: 6,
-          },
-        ],
-      }
+import treeview from "vue3-treeview";
+import "vue3-treeview/dist/style.css";
+
+export default {
+  components: {
+    tree: treeview,
+  },
+  data: function () {
+    return {
+      modeBool: false,
+      config: {
+        roots: ["satu", "dua", "tiga"],
+        keyboardNavigation: false,
+        dragAndDrop: false,
+        checkboxes: true,
+        editable: false,
+        disabled: false,
+        padding: 25,
+      },
+      nodes: {
+        satu :{
+          text: "Satu",
+          children: ['satusatu', 'duadua', 'tigatiga']
+        },
+        satusatu: {
+          text: 'satusatu'
+        },
+        duadua: {
+          text: 'duadua'
+        },
+        tigatiga: {
+          text: 'tigatiga'
+        },
+        dua :{
+          text: "Dua"
+        },
+        tiga :{
+          text: "Tiga"
+        },
+      },
+    };
+  },
+  methods: {
+    changeMode() {
+      this.modeBool = !this.modeBool;
+      this.config.checkMode = this.modeBool ? 0 : 1;
     },
-  }
+  },
+};
 </script>

@@ -6,7 +6,7 @@
                 <span class="text-muted fw-semibold fs-7">{{ breadcrump }}</span>
             </h3>
             <div class="card-toolbar">
-                <v-btn class="success" variant="tonal" color="success">
+                <v-btn class="success" variant="tonal" color="success"  data-bs-toggle="modal" data-bs-target="#modalCreate">
                     <i class="bi bi-plus-circle"></i>
                     Create
                 </v-btn>
@@ -63,7 +63,7 @@
                         <i class="bi bi-trash-fill"></i>
                     </v-btn>
 
-                    <v-btn class="danger" icon="mdi-vuetify" fab dark small variant="tonal" color="warning" v-on:click="show(item.raw)">
+                    <v-btn class="danger" icon="mdi-vuetify" fab dark small variant="tonal" color="warning" v-on:click="show(item.raw)" data-bs-toggle="modal" data-bs-target="#modalUpdate">
                         <i class="bi bi-pencil-square"></i>
                     </v-btn>
 
@@ -72,6 +72,40 @@
             </v-data-table-server>
         </div>
     </div>
+
+    <Modal 
+        title="Create new data"
+        id="modalCreate"
+        :component= formComponent
+    >
+        <Form
+            :formId="formCreate"
+            :forms="forms"
+            @submit.prevent="create"
+        >
+            <v-row justify='end' class="mt-3">
+                <v-btn type="submit" fab dark small variant="tonal" color="blue">Submit</v-btn>
+            </v-row>
+        </Form>
+
+    </Modal>
+
+    <Modal 
+        title="Update data"
+        id="modalUpdate"
+        :backdrop="true"
+    >
+        <Form
+            :formId="formUpdate"
+            :forms="forms"
+            @submit.prevent="update"
+        >
+            <v-row justify='end'>
+                <v-btn type="submit" fab dark small variant="tonal" color="green">Update</v-btn>
+            </v-row>
+        </Form>
+    </Modal>
+
 </template>
 
 <script>
@@ -80,6 +114,7 @@
         title: String,
         breadcrump: String,
         headers: Object,
+        forms: Object,
         modules: String
     },
     data () {
@@ -92,13 +127,19 @@
         currentPage: 1,
         itemsPerPage: 10,
         isLoading: true,
+        formCreate: null,
+        formUpdate: null,
       }
     },
-
     mounted() {
+        this.onConfiguration()
         this.index()
     },
     methods: {
+        onConfiguration(){
+            this.formCreate = ((this.$props.modules).replace(' ','_'))+'_formCreate';
+            this.formUpdate = ((this.$props.modules).replace(' ','_'))+'_formUpdate';
+        },
         async index(){
             this.isLoading = true
 
@@ -149,11 +190,26 @@
             }
 
         },
+        async create(){
+            try {
+                let Data = this.$helper.onSubmit(this.formCreate)
+                
+            } catch (error) {
+                const err = await error
+                this.isLoading = false
+                let message = `
+                    Error \n
+                    ${err.message} \n
+                `
+                Swal.fire(message)
+            }
+
+        },
         async show(data){
             console.log(data);
         },
         async update(){
-
+            console.log('Test Update');
         },
         async destroy(data){
             console.log(data);

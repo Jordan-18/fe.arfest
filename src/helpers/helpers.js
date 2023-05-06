@@ -11,3 +11,13 @@ export const decrypData = (text) => {
     const plainText = bytes.toString(CryptoJS.enc.Utf8)
     return JSON.parse(plainText);
 }
+
+export const onSubmit = (el) => {
+    const formData = new FormData(document.getElementById(el));
+    let jsonData = {};
+    for (let [key, value] of formData.entries()) {
+        jsonData[key] = value;
+    }
+
+    return jsonData
+}

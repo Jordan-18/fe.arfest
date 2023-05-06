@@ -4,6 +4,8 @@ import router from './routers/app'
 import Cookies from 'js-cookie'
 import * as Helper from '@/helpers/helpers';
 import api from '@/api';
+import globalComponent from '@/components/Material/index'
+import 'vue-search-select/dist/VueSearchSelect.css'
 
 // Vuetify
 import 'vuetify/styles'
@@ -34,6 +36,10 @@ app.config.globalProperties.$api = api
 
 if(Cookies.get('loggedIn')){
   app.config.globalProperties.$dataAuth = Helper.decrypData(Cookies.get('loginData'))
+}
+
+for (const compoenent in globalComponent) {
+  app.component(compoenent, globalComponent[compoenent])
 }
 
 app.use(vuetify)
