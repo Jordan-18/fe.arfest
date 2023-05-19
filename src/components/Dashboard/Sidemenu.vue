@@ -50,11 +50,11 @@
                             </svg>
                         </span>
                     </span>
-                    <span class="menu-title">{{ v1.menu_relation.menu_name }}</span>
+                    <span class="menu-title">{{ v1.menu_name }}</span>
                     <span class="menu-arrow"></span>
                 </span>
-                <div class="menu-sub menu-sub-accordion" :class="{'show' : onDataActive(v1.menu_relation.menus, v1.menu_relation.menus)}">
-                    <div v-for="(v2, i2) in v1.menu_relation.menus" :key="i2">
+                <div class="menu-sub menu-sub-accordion" :class="{'show' : onDataActive(v1.menus, v1.menus)}">
+                    <div v-for="(v2, i2) in v1.menus" :key="i2">
                         
                         <div class="menu-item" v-if="v2.menus.length == 0">
                             <router-link class="menu-link" :to="v2.menu_endpoint" :class="{'active' : isActive(v2.menu_endpoint)}">
@@ -67,13 +67,13 @@
 
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion" v-if="v2.menus.length > 0">
 
-                            <span class="menu-link">
+                            <router-link class="menu-link" :to="v2.menu_endpoint" :class="{'active' : isActive(v2.menu_endpoint)}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
                                 <span class="menu-title">{{ v2.menu_name }}</span>
                                 <span class="menu-arrow"></span>
-                            </span>
+                            </router-link>
 
                             <div class="menu-sub menu-sub-accordion" :class="{'show' : onDataActive(v2.menus)}">
                                 <div v-for="(v3, i3) in v2.menus" :key="i3" class="menu-item">
@@ -177,7 +177,7 @@ export default {
                         "Content-Type": "application/json",
                     },
                 })
-                let data = response.data.data[0].menu_by_access;
+                let data = response.data.data;
 
                 // this.$cookies.set('menuData', this.$helper.encrypData(data))
                 this.menuAccess = data

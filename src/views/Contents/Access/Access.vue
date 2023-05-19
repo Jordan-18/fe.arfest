@@ -46,7 +46,7 @@ export default {
     return {
       modeBool: false,
       config: {
-        roots: ["satu", "dua", "tiga"],
+        roots: [],
         keyboardNavigation: false,
         dragAndDrop: false,
         checkboxes: true,
@@ -54,34 +54,38 @@ export default {
         disabled: false,
         padding: 25,
       },
-      nodes: {
-        satu :{
-          text: "Satu",
-          children: ['satusatu', 'duadua', 'tigatiga']
-        },
-        satusatu: {
-          text: 'satusatu'
-        },
-        duadua: {
-          text: 'duadua'
-        },
-        tigatiga: {
-          text: 'tigatiga'
-        },
-        dua :{
-          text: "Dua"
-        },
-        tiga :{
-          text: "Tiga"
-        },
-      },
+      nodes: {}
     };
+  },
+  mounted(){
+    this.changeMode()
+    this.index()
   },
   methods: {
     changeMode() {
       this.modeBool = !this.modeBool;
       this.config.checkMode = this.modeBool ? 0 : 1;
     },
+
+    async index(){
+      this.$api.defaults.headers.common['Authorization'] = `${this.$dataAuth.token_type} ${this.$dataAuth.token}`;
+      const resposne = await this.$api.get('/roleaccess/'+this.$dataAuth.access, {
+          headers: {
+              "Content-Type": "application/json",
+          },
+      })
+      let data = resposne.data.data
+      let children = []
+
+      for (let key in data) {
+        data[key]['children'].forEach(child => {
+          children.push(child)
+        });
+      }
+
+      this.nodes = data
+      this.config.roots = Object.keys(data).filter(key => !children.includes(key))
+    }
   },
 };
 </script>

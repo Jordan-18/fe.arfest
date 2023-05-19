@@ -77,7 +77,7 @@ export default {
                         token_type  : response.data.data.token_type,
                         token       : response.data.data.access_token,
                         name        : response.data.data.user.name,
-                        access      : response.data.data.user.user_access,
+                        access      : response.data.data.user.useraccess,
                         email       : response.data.data.user.email,
                         username    : response.data.data.user.username                 
                     }

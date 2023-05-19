@@ -12,6 +12,7 @@
                 <Text
                     v-if="v1.type == 'text'"
                     :id="v1.id"
+                    :name="v1.id"
                     :placeholder="v1.label"
                     :variants="v1.variants"
                     :readonly="v1.readonly"
@@ -38,23 +39,25 @@
                 <Hidden
                     v-if="v1.type == 'hidden'"
                     :id="v1.id"
+                    :name="v1.id"
                     :placeholder="v1.label"
                 />
 
                 <Number
                     v-if="v1.type == 'number'"
                     :id="v1.id"
+                    :name="v1.id"
                     :placeholder="v1.label"
                     :variants="v1.variants"
                 />
+
 
                 <Select1 
                     v-if="v1.type == 'select'"
                     :id="v1.id"
                     :placeholder="v1.label"
                     :items="v1.items"
-                    :on="v1.event"
-                    :function="v1.function"
+                    :onFunction="v1.onFunction"
                 />
 
                 <Selectmultiple 
@@ -72,7 +75,7 @@
                     :readonly="v1.readonly"
                 />
 
-                <VCheckbox
+                <!-- <VCheckbox
                     v-if="v1.type == 'vcheckbox'"
                     :id="v1.id"
                     :placeholder="v1.label"
@@ -82,7 +85,7 @@
                     v-if="v1.type == 'vradio'"
                     :id="v1.id"
                     :placeholder="v1.label"
-                />
+                /> -->
 
                 <VPassword
                     v-if="v1.type == 'vpassword'"

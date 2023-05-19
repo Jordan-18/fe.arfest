@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import * as Helper from '@/helpers/helpers';
 import api from '@/api';
 import globalComponent from '@/components/Material/index'
+
 import 'vue-search-select/dist/VueSearchSelect.css'
 
 // Vuetify

@@ -1,14 +1,19 @@
 <template>
-  <model-select 
-      :id="id"
-      :options="items"
+    <model-select 
+      :options="option"
       v-model="item"
-      class="mt-1"
+      class="form-control mt-3"
+      @update:modelValue="item"
       :placeholder="placeholder"
-      v-on:click="tes"
-      >
-      <!-- v-on:[event.on]="event.function" -->
-   </model-select>
+    >
+    </model-select>
+
+   <Hidden 
+      :name="id" 
+      :id="id" 
+      :value="item"
+      v-on:change="menuFunction"
+    />
 </template>
 
 <script>
@@ -19,17 +24,21 @@ export default {
     id: String,
     placeholder: String,
     items:Object,
-    event:Object,
+    onFunction: Function
   },
   data () {
-  return {
-    item: {
-      value: '',
-      text: ''
-    },
-  }
+    return {
+      option: this.$props.items,
+      item: "",
+    }
+  },
+  mounted(){
   },
   methods: {
+    menuFunction(){
+      console.log('tes');
+      // this.$props.onFunction()
+    }
   },
   components: {ModelSelect}
 }

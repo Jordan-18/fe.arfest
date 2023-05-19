@@ -7,8 +7,8 @@ import Hidden from './Input/Hidden.vue'
 import Number from './Input/Number.vue'
 
 import VText from './Vinput/Text.vue'
-import VCheckbox from './Vinput/Checkbox.vue'
-import VRadio from './Vinput/Radio.vue'
+// import VCheckbox from './Vinput/Checkbox.vue'
+// import VRadio from './Vinput/Radio.vue'
 import VPassword from './Vinput/Password.vue'
 import VHidden from './Vinput/Hidden.vue'
 import VNumber from './Vinput/Number.vue'
@@ -37,8 +37,8 @@ export default {
     Selectgroup,
 
     VText,
-    VCheckbox,
-    VRadio,
+    // VCheckbox,
+    // VRadio,
     VPassword,
     VHidden,
     VNumber,
