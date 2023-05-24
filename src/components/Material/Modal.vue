@@ -1,10 +1,10 @@
 <template>
     <div class="modal fade" :id="id" tabindex="-1" aria-hidden="true" :data-bs-backdrop="backdrop ? 'static' : null">
         <div class="modal-dialog" :class="modalSize">
-            <div class="modal-content">
+            <div class="modal-content" :style="style">
                 <div class="modal-header py-7 d-flex justify-content-between">
                     <h2>{{ title }}</h2>
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal" :id="btnClose">
                         <span class="svg-icon svg-icon-1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"></rect>
@@ -25,13 +25,14 @@
     props:{
         id:String,
         title: String,
-        backdrop: String,
+        backdrop: Boolean,
         size:String,
-        component: String,
+        style:String,
     },
     data () {
       return {
-        modalSize: ''
+        modalSize: '',
+        btnClose : this.$props.id+'Close'
       }
     },
     mounted(){

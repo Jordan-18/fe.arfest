@@ -49,7 +49,7 @@
     <Modal 
         title="Create new data"
         id="modalCreate"
-        :component= formComponent
+        style="height: 500px;"
     >
         <Form
             formId="menuCreate"
@@ -58,34 +58,148 @@
 
             <div class="row">
 
-                <div class="col-md-6">
-                    <Label class="mt-3" title="Menu Level" />
-                    <Select1
-                        id="menu_level"
-                        placeholder="Menu Level"
-                        :items="menu_level"
+                <div class="col-md-12">
+                    <Label class="mt-3" title="Menu Parent" />
+                    <Select1 
+                        class="mt-3"
+                        id="select-menu_parent"
+                        placeholder="Menu Parent"
+                        :items="menuSelect"
+                        @value-data="selected"
                     />
                 </div>
-                
+
                 <div class="col-md-6">
-                    <Label class="mt-3" title="Menu Level" />
-                    <Select1
-                        id="menu_level"
+                    <Label class="mt-3" title="Menu Kode" />
+                    <Text
+                        id="menu_kode"
                         class="mt-3"
-                        placeholder="Menu Level"
-                        :items="menu_level"
+                        placeholder="Menu Kode"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6">
+                    <Label class="mt-3" title="Menu Name" />
+                    <Text
+                        id="menu_name"
+                        class="mt-3"
+                        placeholder="Menu Name"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6">
+                    <Label class="mt-3" title="Menu Icon" />
+                    <Text
+                        id="menu_icon"
+                        class="mt-3"
+                        placeholder="Menu Icon"
+                    />
+                    <div class="form-text">
+                        get Icon at <a href="https://icons.getbootstrap.com/" target="_blank">here</a>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <Label class="mt-3" title="Menu Endpoint" />
+                    <Text
+                        id="menu_endpoint"
+                        class="mt-3"
+                        placeholder="Menu Endpoint"
+                        required
                     />
                 </div>
 
             </div>
 
-            <v-row justify='end' class="mt-3">
-                <v-btn type="submit" fab dark small variant="tonal" color="blue">Submit</v-btn>
+            <v-row justify='end' class="mt-5">
+                <v-btn type="submit" fab dark small variant="tonal" color="green">Submit</v-btn>
             </v-row>
         </Form>
 
     </Modal>
-    
+
+    <Modal 
+        title="Update data"
+        id="modalUpdate"
+        style="height: 500px;"
+        :backdrop="true"
+    >
+        <Form
+            formId="menuUpdate"
+            @submit.prevent="update"
+        >
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <Label class="mt-3" title="Menu Parent" />
+                    <Select1
+                        id="select-menu_parent"
+                        class="mt-3"
+                        placeholder="Menu Parent"
+                        :items="menuSelect"
+                        :value="menu.menu_parent"
+                        v-model="menu.menu_parent"
+                    />
+                </div>
+
+                <div class="col-md-6">
+                    <Label class="mt-3" title="Menu Kode" />
+                    <Text
+                        id="menu_kode"
+                        class="mt-3"
+                        placeholder="Menu Kode"
+                        :value="menu.menu_kode"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6">
+                    <Label class="mt-3" title="Menu Name" />
+                    <Text
+                        id="menu_name"
+                        class="mt-3"
+                        placeholder="Menu Name"
+                        :value="menu.menu_name"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6">
+                    <Label class="mt-3" title="Menu Icon" />
+                    <Text
+                        id="menu_icon"
+                        class="mt-3"
+                        placeholder="Menu Icon"
+                        :value="menu.menu_icon"
+                    />
+                    <div class="form-text">
+                        get Icon at <a href="https://icons.getbootstrap.com/" target="_blank">here</a>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <Label class="mt-3" title="Menu Endpoint" />
+                    <Text
+                        id="menu_endpoint"
+                        class="mt-3"
+                        placeholder="Menu Endpoint"
+                        :value="menu.menu_endpoint"
+                        required
+                    />
+                </div>
+
+            </div>
+
+            <v-row justify='end' class="mt-5">
+                <v-btn type="submit" fab dark small variant="tonal" color="green">Submit</v-btn>
+            </v-row>
+        </Form>
+
+    </Modal>
+
 </template>
 
 <script>
@@ -106,56 +220,38 @@
                     { text: "Menu 02", value: "2" },
                     { text: "Menu 03", value: "3" },
                 ],
-                forms:[
-                    {
-                        type: "hidden",
-                        id:"menu_id"
-                    },
-                    {
-                        label: "Menu Level", 
-                        type:"select", 
-                        id:"menu_level", 
-                        col:"3",
-                        onFunction: this.menuParent,
-                        items : [
-                            { text: "Menu 01", value: "1" }, 
-                            { text: "Menu 02", value: "2" },
-                            { text: "Menu 03", value: "3" },
-                        ]
-                    },
-                    {
-                        label:"Menu Kode", 
-                        type:"text", 
-                        id:"menu_kode",
-                        col:"6"
-                    },
-                    {
-                        label:"Menu Icon", 
-                        type:"text", 
-                        id:"menu_icon",
-                        col:"6"
-                    },
-                    {
-                        label:"Menu EndPoint", 
-                        type:"text", 
-                        id:"menu_endpoint",
-                        col:"6"
-                    },
-                ],
-                isLoading: true,
+                menu: null,
+                menus: [],
+                menuSelect : [],
             };
         },
         mounted() { 
+            this.index()
         },
         methods: {
             async create(){
                 try {
-                    let data = this.$helper.onSubmit('menuCreate')
-                    console.log(data);
+                    const data = this.$helper.onSubmit('menuCreate')
+
+                    const response = await this.$api.post('/menu', data ,{
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    })
+                    
+                    if(response.status == 200){
+                        document.getElementById('modalCreateClose').click();
+                        document.getElementById('menuCreate').reset();
+                        
+                        Swal.fire('Menu Create Successfully')
+                    }
+                    else{
+                        Swal.fire('Something Wrong !')
+                        console.log(response);
+                    }
                     
                 } catch (error) {
                     const err = await error
-                    this.isLoading = false
                     let message = `
                         Error \n
                         ${err.message} \n
@@ -165,7 +261,35 @@
 
             },
             async show(data){
-                console.log(data);
+                try {
+                    const response = await this.$api.get('/menu/'+data.menu_id, {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    })
+                    
+                    if(response.status == 200){
+                        let data = response.data.data[0]
+
+                        this.menu = {
+                            menu_id         : data.menu_id,
+                            menu_parent     : data.menu_parent,
+                            menu_kode       : data.menu_kode,
+                            menu_name       : data.menu_name,
+                            menu_icon       : data.menu_icon,
+                            menu_endpoint   : data.menu_endpoint,
+                        }
+                    }
+
+                } catch (error) {
+                    const err = await error
+                    let message = `
+                        Error \n
+                        ${err.message} \n
+                    `
+                    Swal.fire(message)
+                }
+
             },
             async update(){
                 console.log('Test Update');
@@ -173,10 +297,29 @@
             async destroy(data){
                 console.log(data);
             },
-
             async menuParent(){
                 console.log('tessss');
-            }
+            },
+            async index(){
+                const responseMenu = await this.$api.get('/menu?limit=0', {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                this.menus = responseMenu.data.data.data;
+
+                this.selectMenu()
+            },
+            async selectMenu(){
+                this.menuSelect = this.menus.map((v,i) => {
+                    let result = {
+                        text: v.menu_name,
+                        value: v.menu_id
+                    };
+
+                    return result;
+                })
+            },
         },
     }
 </script>

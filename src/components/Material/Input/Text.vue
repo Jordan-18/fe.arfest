@@ -3,6 +3,7 @@
       class="form-control"
       type="text" 
       :id="id"
+      :name="id"
       :readonly="readonly"
       :placeholder="placeholder"
     >

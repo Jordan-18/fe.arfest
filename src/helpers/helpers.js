@@ -16,8 +16,16 @@ export const onSubmit = (el) => {
     const formData = new FormData(document.getElementById(el));
     let jsonData = {};
     for (let [key, value] of formData.entries()) {
-        jsonData[key] = value;
+        let part = key.split('-')
+        if(part[0] == 'select'){
+            let parentNode = document.getElementById(key).parentNode.getAttribute('value')
+            jsonData[part[1]] = parentNode;
+        }
+        else{
+            jsonData[part[0]] = value;
+        }
     }
 
     return jsonData
 }
+

@@ -77,8 +77,6 @@
             this.isLoading = true
 
             try {                
-                this.$api.defaults.headers.common['Authorization'] = `${this.$dataAuth.token_type} ${this.$dataAuth.token}`;
-    
                 var url = '/'+this.$props.modules+'?index='
 
                 if(this.search != ''){

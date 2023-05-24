@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import * as Helper from '@/helpers/helpers';
 import api from '@/api';
 import globalComponent from '@/components/Material/index'
-
+import { ModelSelect } from 'vue-search-select'
 import 'vue-search-select/dist/VueSearchSelect.css'
 
 // Vuetify
@@ -36,8 +36,14 @@ app.config.globalProperties.$helper = Helper
 app.config.globalProperties.$api = api
 
 if(Cookies.get('loggedIn')){
+  const Auth = Helper.decrypData(Cookies.get('loginData'))
+  
   app.config.globalProperties.$dataAuth = Helper.decrypData(Cookies.get('loginData'))
+  api.defaults.headers.common['Authorization'] = `${Auth.token_type} ${Auth.token}`;
 }
+
+
+app.component('model-select', ModelSelect)
 
 for (const compoenent in globalComponent) {
   app.component(compoenent, globalComponent[compoenent])

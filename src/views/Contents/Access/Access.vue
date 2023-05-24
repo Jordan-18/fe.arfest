@@ -68,7 +68,6 @@ export default {
     },
 
     async index(){
-      this.$api.defaults.headers.common['Authorization'] = `${this.$dataAuth.token_type} ${this.$dataAuth.token}`;
       const resposne = await this.$api.get('/roleaccess/'+this.$dataAuth.access, {
           headers: {
               "Content-Type": "application/json",
