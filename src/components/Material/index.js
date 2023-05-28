@@ -17,11 +17,10 @@ import VSelectgroup from './Vselect/Selectgroup.vue'
 
 import Form from './Form.vue'
 import Modal from './Modal.vue'
+import Tree from './Tree.vue'
 
 import Select1 from './Select/Select1.vue'
 import Selectgroup from './Select/Selectgroup.vue'
-
-
 
 export default {
     Form,
@@ -33,12 +32,11 @@ export default {
     Hidden,
     Number,
     Modal,
+    Tree,
     Select1,
     Selectgroup,
 
     VText,
-    // VCheckbox,
-    // VRadio,
     VPassword,
     VHidden,
     VNumber,

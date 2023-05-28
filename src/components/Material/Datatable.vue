@@ -55,7 +55,8 @@
     props:{
         title: String,
         headers: Object,
-        modules: String
+        modules: String,
+        query: String,
     },
     data () {
       return {
@@ -87,6 +88,9 @@
                 }
                 if(this.itemsPerPage != 10 && this.itemsPerPage > 0){
                     url = url+'&limit='+this.itemsPerPage
+                }
+                if(this.$props.query != "" && this.$props.query != undefined){
+                    url = url+this.$props.query
                 }
                     
                 const response = await this.$api.get(url,{

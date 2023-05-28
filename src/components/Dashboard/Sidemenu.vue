@@ -39,9 +39,9 @@
                 </router-link>
             </div>
             
-            <div data-kt-menu-trigger="click" class="menu-item here menu-accordion" v-for="(v1, i1) in menuAccess" :key="i1">
+            <div data-kt-menu-trigger="click" class="menu-item" v-for="(v1, i1) in menuAccess" :key="i1" :class="{'here menu-accordion' : (v1.menus.length > 0)}">
 
-                <span class="menu-link">
+                <router-link class="menu-link" :to="v1.menu_endpoint" :class="{'active' : isActive(v1.menu_endpoint)}">
                     <span class="menu-icon">
                         <span class="svg-icon svg-icon-5">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,8 +51,9 @@
                         </span>
                     </span>
                     <span class="menu-title">{{ v1.menu_name }}</span>
-                    <span class="menu-arrow"></span>
-                </span>
+                    <span class="menu-arrow" v-if="(v1.menus).length > 0"></span>
+                </router-link>
+                
                 <div class="menu-sub menu-sub-accordion" :class="{'show' : onDataActive(v1.menus, v1.menus)}">
                     <div v-for="(v2, i2) in v1.menus" :key="i2">
                         
@@ -94,7 +95,7 @@
 
             </div>
 
-            <div data-kt-menu-trigger="click" class="menu-item here menu-accordion" :class="{'show' : (['/access','/menu']).includes(this.$route.path)}">
+            <!-- <div data-kt-menu-trigger="click" class="menu-item here menu-accordion" :class="{'show' : (['/access','/menu','/user']).includes(this.$route.path)}">
                 <span class="menu-link">
                     <span class="menu-icon">
                         <span class="svg-icon svg-icon-5">
@@ -127,8 +128,17 @@
                             <span class="menu-title">Menu</span>
                         </router-link>
                     </div>
+
+                    <div class="menu-item">
+                        <router-link class="menu-link" to="/user" :class="{'active' : isActive('/user')}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">User</span>
+                        </router-link>
+                    </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>

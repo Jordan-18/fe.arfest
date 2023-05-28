@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" :id="id" tabindex="-1" aria-hidden="true" :data-bs-backdrop="backdrop ? 'static' : null">
+    <div class="modal fade" :id="id" tabindex="-1" aria-hidden="true" :data-bs-backdrop="backdrop ? 'static' : ''">
         <div class="modal-dialog" :class="modalSize">
             <div class="modal-content" :style="style">
                 <div class="modal-header py-7 d-flex justify-content-between">
@@ -23,11 +23,11 @@
 <script>
   export default {
     props:{
-        id:String,
-        title: String,
-        backdrop: Boolean,
-        size:String,
-        style:String,
+        id      :String,
+        title   :String,
+        size    :String,
+        style   :String,
+        backdrop:Boolean,
     },
     data () {
       return {
