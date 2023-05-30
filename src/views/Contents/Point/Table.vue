@@ -78,7 +78,15 @@
                             >
 
                                 <div class="row">
-
+                                    <div class="col-md-3">
+                                        <Label title="Busur"/>
+                                        <Select1
+                                            class="mt-3"
+                                            id="select-point_jenis_busur"
+                                            placeholder="Jenis Busur"
+                                            :items="selectJenis"
+                                        />
+                                    </div>
                                 </div>
 
                                 <v-row justify='end' class="mt-5 mb-5">
@@ -121,6 +129,7 @@
                 ],
                 toogle: false,
                 Point: null,
+                selectJenis:[],
 
                 breadcrump: '',
                 onSubmit: null,
@@ -129,6 +138,7 @@
             };
         },
         mounted() {
+            this.index()
         },
         methods: {
             toogleForm(){
@@ -150,6 +160,9 @@
                 if(Math.abs(scrollKanan - scrollHasil) <= 1){
                     console.log('Scroll horizontal telah mencapai batas kanan');
                 }
+            },
+            async index(){
+                this.jenisbusurSelect()
             },
             async create(){
                 try {
@@ -241,6 +254,23 @@
                     `
                     Swal.fire(message)
                 }
+            },
+
+            async jenisbusurSelect(){
+                const responseMenu = await this.$api.get('/jenisbusur?limit=0', {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+
+                this.selectJenis = (responseMenu.data.data.data).map((v,i) => {
+                    let result = {
+                        text: v.jenis_busur_name,
+                        value: v.jenis_busur_id
+                    };
+
+                    return result;
+                });
             },
         },
     }
