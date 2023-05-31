@@ -62,19 +62,7 @@
                         <button id="kt_sign_up_submit" class="btn btn-primary" data-kt-translate="sign-up-submit">
                             <span class="indicator-label">Submit</span>
                         </button>
-                        <div class="d-flex align-items-center">
-                            <div class="text-gray-400 fw-semibold fs-6 me-6">Or</div>
-                            <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light me-3">
-                                <img alt="Logo" src="@/assets/media/svg/brand-logos/google-icon.svg" class="p-4" />
-                            </a>
-                            <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light me-3">
-                                <img alt="Logo" src="@/assets/media/svg/brand-logos/facebook-3.svg" class="p-4" />
-                            </a>
-                            <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light">
-                                <img alt="Logo" src="@/assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show p-4" />
-                                <img alt="Logo" src="@/assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show p-4" />
-                            </a>
-                        </div>
+                        <div class="d-flex align-items-center"></div>
                     </div>
                 </form>
             </div>

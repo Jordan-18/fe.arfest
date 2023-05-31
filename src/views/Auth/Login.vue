@@ -31,16 +31,9 @@
                             </button>
                             <div class="d-flex align-items-center">
                                 <div class="text-gray-400 fw-semibold fs-6 me-3 me-md-6" data-kt-translate="general-or">Or</div>
-                                <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light me-3">
+                                <button @click="googleAuth" type="button" class="symbol symbol-circle symbol-45px w-45px bg-light me-3">
                                     <img alt="Logo" src="@/assets/media/svg/brand-logos/google-icon.svg" class="p-4" />
-                                </a>
-                                <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light me-3">
-                                    <img alt="Logo" src="@/assets/media/svg/brand-logos/facebook-3.svg" class="p-4" />
-                                </a>
-                                <a href="#" class="symbol symbol-circle symbol-45px w-45px bg-light">
-                                    <img alt="Logo" src="@/assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show p-4" />
-                                    <img alt="Logo" src="@/assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show p-4" />
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -51,11 +44,15 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
     data(){
         return {}
-    }, 
-
+    },
+    mounted(){
+        this.responseDatalogin()
+    },
     methods:{
         async Login(){
             Swal.showLoading()
@@ -104,7 +101,43 @@ export default {
                 Swal.fire(message)
                 console.error(err);
             }
-        }
+        },
+        async googleAuth(){
+            const response = await this.$api.get('/gauth', {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            window.location.href = response.data.data.url;
+        },
+        responseDatalogin() {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.has('response')) {
+                const response = JSON.parse(params.get('response'));
+                let loggedIn    = true
+                let loginData   = {
+                    token_type  : response.original.data.token_type,
+                    token       : response.original.data.access_token,
+                    name        : response.original.data.user.name,
+                    access      : response.original.data.user.useraccess,
+                    email       : response.original.data.user.email,
+                    username    : response.original.data.user.username                 
+                }
+                loginData = this.$helper.encrypData(loginData)
+
+                this.$cookies.set('loggedIn', loggedIn)
+                this.$cookies.set('loginData', loginData)
+
+                window.location.replace('/');
+
+                Swal.fire('Login Successfully')
+            } else {
+                const response = JSON.parse(params.get('error'));
+                console.error(response);
+            }
+        },
+
     }
 }
 </script>
