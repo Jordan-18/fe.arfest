@@ -1,14 +1,12 @@
 <template>
-    <v-text-field
+    <input
+      class="form-control"
       type="number" 
       :name="id" 
       :label="placeholder"
       :id="id"
-      single-line
-      clearable
-      :variant="variants"
+      :readonly="readonly"
     >
-    </v-text-field>
 </template>
 
 <script>
@@ -16,7 +14,7 @@
     props:{
         id: String,
         placeholder: String,
-        variants:String
+        readonly:String,
     },
   }
 </script>

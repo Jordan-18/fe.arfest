@@ -44,8 +44,6 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
-
 export default {
     data(){
         return {}
@@ -73,6 +71,7 @@ export default {
                     let loginData   = {
                         token_type  : response.data.data.token_type,
                         token       : response.data.data.access_token,
+                        user_id     : response.data.data.user.user_id,
                         name        : response.data.data.user.name,
                         access      : response.data.data.user.useraccess,
                         email       : response.data.data.user.email,
@@ -120,6 +119,7 @@ export default {
                     token_type  : response.original.data.token_type,
                     token       : response.original.data.access_token,
                     name        : response.original.data.user.name,
+                    user_id     : response.original.data.user.user_id,
                     access      : response.original.data.user.useraccess,
                     email       : response.original.data.user.email,
                     username    : response.original.data.user.username                 

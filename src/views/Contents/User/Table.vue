@@ -322,7 +322,7 @@
                     return result;
                 })
             },
-            toogleForm(){
+            async toogleForm(){
                 if(this.toogle){
                     this.toogle = false
                 }else{
