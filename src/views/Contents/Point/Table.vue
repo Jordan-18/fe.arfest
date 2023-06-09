@@ -456,6 +456,7 @@
                 <v-btn
                     color="warning"
                     variant="tonal"
+                    @click="onSendEmail(Point)"
                 >
                     <i class="bi bi-envelope-check"></i>
                     Kirim Email
@@ -464,6 +465,7 @@
                 <v-btn
                     color="info"
                     variant="tonal"
+                    @click="onPrint(Point)"
                 >
                     <i class="bi bi-printer"></i>
                     Print
@@ -804,7 +806,12 @@ export default {
         async detailTarget(img){
             this.targetImg = img
         },
-
+        async onSendEmail(data){
+            console.log(data);
+        },
+        async onPrint(data){
+            console.log(data);
+        }
     },
 }
 </script>
