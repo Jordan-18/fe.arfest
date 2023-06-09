@@ -4,8 +4,12 @@
 </script>
 
 <template>
-	<Auth v-if="!isLoginPage"></Auth>
-	<App v-if="isLoginPage"></App>
+	<template v-if="!isLoginPage">
+		<Auth ></Auth>
+	</template>
+	<template v-if="isLoginPage">
+		<App ></App>
+	</template>
 </template>
 
 <script>
