@@ -5,7 +5,11 @@
                 <div class="me-2"></div>
                 <div class="m-0">
                     <span class="text-gray-400 fw-bold fs-5 me-2" data-kt-translate="sign-in-head-desc">Not a Member yet?</span>
-                    <a href="/register" class="link-primary fw-bold fs-5" data-kt-translate="sign-in-head-link">Sign Up</a>
+                    <a class="link-primary fw-bold fs-5" data-kt-translate="sign-in-head-link">
+                        <router-link to="/register">
+                            Sign Up
+                        </router-link>
+                    </a>
                 </div>
             </div>
             <div class="py-20">
@@ -53,7 +57,7 @@ export default {
     },
     methods:{
         async Login(){
-            Swal.showLoading()
+            this.$swal.showLoading()
             try {
                 const data = {
                     email   : this.email, 
@@ -81,12 +85,12 @@ export default {
 
                     this.$cookies.set('loggedIn', loggedIn)
                     this.$cookies.set('loginData', loginData)
+                    
+                    this.$router.push('/')
 
-                    window.location.replace('/');
-
-                    Swal.fire('Login Successfully')
+                    this.$swal.fire('Login Successfully')
                 }else{
-                    Swal.fire('Something Wrong !')
+                    this.$swal.fire('Something Wrong !')
                     console.log(response);
                 }
             } catch (error) {
@@ -97,7 +101,7 @@ export default {
                     ${err.response.data.meta.message}
                 `
 
-                Swal.fire(message)
+                this.$swal.fire(message)
                 console.error(err);
             }
         },
@@ -129,12 +133,12 @@ export default {
                 this.$cookies.set('loggedIn', loggedIn)
                 this.$cookies.set('loginData', loginData)
 
-                window.location.replace('/');
+                this.$router.push('/')
 
-                Swal.fire('Login Successfully')
+                this.$swal.fire('Login Successfully')
             } else {
                 const response = JSON.parse(params.get('error'));
-                console.error(response);
+                console.log(response);
             }
         },
 

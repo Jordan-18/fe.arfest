@@ -115,13 +115,13 @@
 
             } catch (error) {
                 const err = await error
-                console.error(err);
+                console.log(err);
                 this.isLoading = false
                 let message = `
                     Error \n
                     ${err.message} \n
                 `
-                Swal.fire(message)
+                this.$swal.fire(message)
             }
 
         },

@@ -193,7 +193,6 @@ export default {
     methods:{
         async setMenu(){
             try {
-                this.$api.defaults.headers.common['Authorization'] = `${this.$dataAuth.token_type} ${this.$dataAuth.token}`;
                 const response = await this.$api.get('/menuaccess/'+this.$dataAuth.access,{
                     headers: {
                         "Content-Type": "application/json",
@@ -206,12 +205,12 @@ export default {
 
             } catch (error) {
                 const err = await error
-                console.error(err);
+                console.log(err);
                 let message = `
                     Error \n
                     ${err.message} \n
                 `
-                Swal.fire(message)
+                this.$swal.fire(message)
             }
         },
 
@@ -233,7 +232,7 @@ export default {
         },
 
         Logout(){
-            Swal.fire({
+            this.$swal.fire({
                 title: 'Logout',
                 text: "Are you sure ?",
                 icon: 'warning',
@@ -242,20 +241,20 @@ export default {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes !'
             }).then((result) => {
-            if (result.isConfirmed) {
+                if (result.isConfirmed) {
 
-                this.$cookies.remove('loggedIn')
-                this.$cookies.remove('menuData')
-                this.$cookies.remove('loginData')
+                    this.$cookies.remove('loggedIn')
+                    this.$cookies.remove('menuData')
+                    this.$cookies.remove('loginData')
 
-                window.location.replace('/login');
+                    window.location.reload();
 
-                Swal.fire(
-                'Log out Successfully!',
-                'Your Log out Successfully.',
-                'success'
-                )
-            }
+                    this.$swal.fire(
+                        'Log out Successfully!',
+                        'Your Log out Successfully.',
+                        'success'
+                    )
+                }
             })
 			
 		}

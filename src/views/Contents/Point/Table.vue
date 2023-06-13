@@ -655,7 +655,7 @@ export default {
 
                 this.get()
                 this.toogleForm()
-                Swal.fire(response.data.meta.message)
+                this.$swal.fire(response.data.meta.message)
                 
             } catch (error) {
                 const err = await error
@@ -663,7 +663,7 @@ export default {
                     Error \n
                     ${err.message} \n
                 `
-                Swal.fire(message)
+                this.$swal.fire(message)
             }
 
         },
@@ -688,7 +688,7 @@ export default {
                 })
 
                 this.toogleForm()
-                Swal.fire(response.data.meta.message)
+                this.$swal.fire(response.data.meta.message)
 
             } catch (error) {
                 const err = await error
@@ -696,12 +696,12 @@ export default {
                     Error \n
                     ${err.message} \n
                 `
-                Swal.fire(message)
+                this.$swal.fire(message)
             }
         },
         async destroy(data){
             try {
-                Swal.fire({
+                this.$swal.fire({
                     title: 'Delete Data',
                     text: "Are you sure ?",
                     icon: 'warning',
@@ -716,7 +716,7 @@ export default {
                                 "Content-Type": "application/json",
                             },
                         })
-                        Swal.fire(response.data.meta.message)
+                        this.$swal.fire(response.data.meta.message)
                     }
                 })
             } catch (error) {
@@ -725,7 +725,7 @@ export default {
                     Error \n
                     ${err.message} \n
                 `
-                Swal.fire(message)
+                this.$swal.fire(message)
             }
         },
         async jenisbusurSelect(){

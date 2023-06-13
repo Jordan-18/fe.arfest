@@ -228,7 +228,7 @@
                     })
                     
                     this.toogleForm()
-                    Swal.fire(response.data.meta.message)
+                    this.$swal.fire(response.data.meta.message)
                     
                 } catch (error) {
                     const err = await error
@@ -236,7 +236,7 @@
                         Error \n
                         ${err.message} \n
                     `
-                    Swal.fire(message)
+                    this.$swal.fire(message)
                 }
 
             },
@@ -268,7 +268,7 @@
                     })
 
                     this.toogleForm()
-                    Swal.fire(response.data.meta.message)
+                    this.$swal.fire(response.data.meta.message)
 
                 } catch (error) {
                     const err = await error
@@ -276,12 +276,12 @@
                         Error \n
                         ${err.message} \n
                     `
-                    Swal.fire(message)
+                    this.$swal.fire(message)
                 }
             },
             async destroy(data){
                 try {
-                    Swal.fire({
+                    this.$swal.fire({
                         title: 'Delete Data',
                         text: "Are you sure ?",
                         icon: 'warning',
@@ -296,7 +296,7 @@
                                     "Content-Type": "application/json",
                                 },
                             })
-                            Swal.fire(response.data.meta.message)
+                            this.$swal.fire(response.data.meta.message)
                         }
                     })
                 } catch (error) {
@@ -305,7 +305,7 @@
                         Error \n
                         ${err.message} \n
                     `
-                    Swal.fire(message)
+                    this.$swal.fire(message)
                 }
             },
             async index(){
