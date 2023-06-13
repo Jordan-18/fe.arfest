@@ -3,18 +3,24 @@
         <div class="d-flex justify-content-between flex-column-fluid flex-column w-100 mw-450px">
             <div class="d-flex flex-stack py-2">
                 <div class="me-2">
-                    <a href="/login" class="btn btn-icon bg-light rounded-circle">
-                        <span class="svg-icon svg-icon-2 svg-icon-gray-800">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.60001 11H21C21.6 11 22 11.4 22 12C22 12.6 21.6 13 21 13H9.60001V11Z" fill="currentColor" />
-                                <path opacity="0.3" d="M9.6 20V4L2.3 11.3C1.9 11.7 1.9 12.3 2.3 12.7L9.6 20Z" fill="currentColor" />
-                            </svg>
-                        </span>
+                    <a  class="btn btn-icon bg-light rounded-circle">
+                        <router-link to="/login">
+                            <span class="svg-icon svg-icon-2 svg-icon-gray-800">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.60001 11H21C21.6 11 22 11.4 22 12C22 12.6 21.6 13 21 13H9.60001V11Z" fill="currentColor" />
+                                    <path opacity="0.3" d="M9.6 20V4L2.3 11.3C1.9 11.7 1.9 12.3 2.3 12.7L9.6 20Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </router-link>
                     </a>
                 </div>
                 <div class="m-0">
                     <span class="text-gray-400 fw-bold fs-5 me-2" data-kt-translate="sign-up-head-desc">Already a member ?</span>
-                    <a href="/login" class="link-primary fw-bold fs-5" data-kt-translate="sign-up-head-link">Sign In</a>
+                    <a class="link-primary fw-bold fs-5" data-kt-translate="sign-up-head-link">
+                        <router-link to="/login">
+                            Sign In
+                        </router-link>
+                    </a>
                 </div>
             </div>
             <div class="py-20">
@@ -79,7 +85,7 @@ export default {
     methods:{
         async Register(){
             try {
-                Swal.showLoading()
+                this.$swal.showLoading()
                 const data = {
                     name    : this.firstName+' '+this.lastName, 
                     username: this.username, 
@@ -107,11 +113,11 @@ export default {
                     this.$cookies.set('loggedIn',loggedIn)
                     this.$cookies.set('loginData',loginData)
                     
-                    window.location.replace('/');
+                    this.$router.push('/')
                     
-                    Swal.fire('Register Successfully')
+                    this.$swal.fire('Register Successfully')
                 }else{
-                    Swal.fire('Something Wrong !')
+                    this.$swal.fire('Something Wrong !')
                     console.log(response);
                 }
             } catch (error) {
@@ -121,8 +127,8 @@ export default {
                     ${err.message} \n
                     ${err.response.data.meta.message}
                 `
-                Swal.fire(message)
-                console.error(err);
+                this.$swal.fire(message)
+                console.log(err);
             }
         }
     }
