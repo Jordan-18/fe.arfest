@@ -16,18 +16,18 @@
                             <div class="card-toolbar">
                                 <v-btn class="info" variant="tonal" color="info" 
                                     @click="() => {
-                                        this.breadcrump = 'Create'
-                                        this.onSubmit = this.create
-                                        this.onSubmitColor = 'green'
-                                        this.textSubmit = 'Submit'
+                                        breadcrump = 'Create'
+                                        onSubmit = create
+                                        onSubmitColor = 'green'
+                                        textSubmit = 'Submit'
                                         
-                                        this.Point = []
-                                        this.pointsData.jarak = ''
-                                        this.pointsData.jenis_busur = ''
-                                        this.pointsData.rambahan = ''
-                                        this.targetAllResult = []
+                                        Point = []
+                                        pointsData.jarak = ''
+                                        pointsData.jenis_busur = ''
+                                        pointsData.rambahan = ''
+                                        targetAllResult = []
 
-                                        this.toogleForm()
+                                        toogleForm()
                                     }"
                                 >
                                     <i class="bi bi-plus-circle"></i>
@@ -273,7 +273,7 @@
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#modalPoint"
                                                             @click="() => {
-                                                                this.targetResult = {
+                                                                targetResult = {
                                                                     markers: [],
                                                                     pointResult: []
                                                                 }
@@ -340,7 +340,7 @@
                         :target="targetResult"
                         :max="pointsData.jumlah_anakPanah"
                         @click="() => {
-                            this.targetResult.sumTotal = this.targetResult.pointResult.reduce((acc, value) => acc + value, 0);
+                            targetResult.sumTotal = targetResult.pointResult.reduce((acc, value) => acc + value, 0);
                         }"
                     />
 

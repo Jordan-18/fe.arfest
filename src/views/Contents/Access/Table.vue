@@ -17,14 +17,14 @@
                             <div class="card-toolbar">
                                 <v-btn class="success" variant="tonal" color="success" 
                                     @click="() => {
-                                        this.breadcrump = 'Create'
-                                        this.onSubmit = this.create
-                                        this.onSubmitColor = 'green'
-                                        this.textSubmit = 'Submit'
+                                        breadcrump = 'Create'
+                                        onSubmit = create
+                                        onSubmitColor = 'green'
+                                        textSubmit = 'Submit'
 
-                                        this.toogleForm()
+                                        toogleForm()
                                     }" 
-                                    v-on:click="this.access = []"
+                                    v-on:click="access = []"
                                 >
                                     <i class="bi bi-plus-circle"></i>
                                     Create
@@ -46,12 +46,12 @@
     
                                         <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="warning" 
                                             @click="() => {
-                                                this.breadcrump = 'Update'
-                                                this.onSubmit = this.update
-                                                this.onSubmitColor = 'secondary'
-                                                this.textSubmit = 'Update'
+                                                breadcrump = 'Update'
+                                                onSubmit = update
+                                                onSubmitColor = 'secondary'
+                                                textSubmit = 'Update'
     
-                                                this.toogleForm()
+                                                toogleForm()
                                             }" 
                                             v-on:click="show(data.raw)"
                                         >
