@@ -5,8 +5,8 @@
             <img src="@/assets/media/avatars/300-1.jpg" alt="" />
         </div>
         <div class="text-center">
-            <a href="" class="text-gray-800 text-hover-primary fs-4 fw-bolder">Admin</a>
-            <span class="text-gray-600 fw-semibold d-block fs-7 mb-1">Pro Player</span>
+            <a href="" class="text-gray-800 text-hover-primary fs-4 fw-bolder">{{ username }}</a>
+            <span class="text-gray-600 fw-semibold d-block fs-7 mb-1">{{ accessname }}</span>
         </div>
     </div>
 </div>
@@ -179,6 +179,8 @@ export default {
         return {
             menuAccess : [],
             activeMenu : '/',
+            username: '',
+            accessname: '',
         }
     },
     created() {
@@ -188,9 +190,35 @@ export default {
         
     },
     mounted(){
-        this.setMenu()
+        this.index()
     },
     methods:{
+        async index(){
+            this.username = this.$dataAuth.username
+            this.getAccess()
+            this.setMenu()
+        },
+        async getAccess(){
+            try {
+                await this.$api.get('/access/'+this.$dataAuth.access,{
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then(response =>{
+                    this.accessname = response.data.data[0].access_name
+                })
+                
+
+            } catch (error) {
+                const err = await error
+                console.log(err);
+                let message = `
+                    Error \n
+                    ${err.message} \n
+                `
+                this.$swal.fire(message)
+            }
+        },
         async setMenu(){
             try {
                 const response = await this.$api.get('/menuaccess/'+this.$dataAuth.access,{
