@@ -15,6 +15,7 @@ const onAccess = async (to, from, next) => {
     const Auth = Helper.decrypData(Cookies.get('loginData'))
     if(localStorage.getItem('accessRoute')){
         let access = localStorage.getItem('accessRoute');
+        access = access.split(',')
         nextRoute(access, to, next)
     }
     else{
