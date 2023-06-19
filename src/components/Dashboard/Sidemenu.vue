@@ -5,7 +5,7 @@
             <img src="@/assets/media/avatars/300-1.jpg" alt="" />
         </div>
         <div class="text-center">
-            <a href="" class="text-gray-800 text-hover-primary fs-4 fw-bolder">{{ username }}</a>
+            <router-link to="/" class="text-gray-800 text-hover-primary fs-4 fw-bolder">{{ username }}</router-link>
             <span class="text-gray-600 fw-semibold d-block fs-7 mb-1">{{ accessname }}</span>
         </div>
     </div>
@@ -275,7 +275,9 @@ export default {
                     this.$cookies.remove('menuData')
                     this.$cookies.remove('loginData')
 
-                    window.location.reload();
+                    localStorage.removeItem('accessRoute')
+
+                    window.location.href = '/';
 
                     this.$swal.fire(
                         'Log out Successfully!',
