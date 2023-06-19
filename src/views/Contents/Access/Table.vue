@@ -344,6 +344,7 @@
                             "Content-Type": "application/json",
                         },
                     })
+                    
                     this.$swal.fire(response.data.meta.message)
                 } catch (error) {
                     const err = await error

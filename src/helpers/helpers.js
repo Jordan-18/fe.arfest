@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import api from '@/api';
 
 const key = '6803d318176f17962941c9efc7da8448f36f8a3d9d77dd4bf886cd9c7bb1cd6f4c470911da65261a412a704301725e1afee037e9bf7027f6d32f8efa4875010c'
 
