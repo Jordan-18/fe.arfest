@@ -24,8 +24,8 @@ const onAccess = async (to, from, next) => {
             },
         }).then(response => {
             let data = response.data.data
-            let access = data.map(item => item.menu_endpoint != '#' ? item.menu_endpoint : null)
-            access = access.filter((index) => index != null)
+            let access = data.map(item => item.menu_endpoint !== '#' ? item.menu_endpoint : null)
+            access = access.filter((index) => index !== null)
             localStorage.setItem('accessRoute', access);
             nextRoute(access, to, next)
         })
