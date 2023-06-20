@@ -6,6 +6,8 @@ import Password from './Input/Password.vue'
 import Hidden from './Input/Hidden.vue'
 import Number from './Input/Number.vue'
 
+import Button from './Button/Button.vue'
+
 import Form from './Form.vue'
 import Modal from './Modal.vue'
 import Tree from './Tree.vue'
@@ -28,4 +30,5 @@ export default {
     Select1,
     Selectgroup,
     Target,
+    Button,
 }

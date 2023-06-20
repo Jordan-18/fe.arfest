@@ -87,8 +87,21 @@
                                     color="info"
                                     @click="updateRoleAccess"
                                 >
-                                    <i class="bi bi-folder-symlink-fill"></i>
+                                    <template v-if="isLoading">
+                                        <v-progress-circular
+                                            justify='end' 
+                                            indeterminate 
+                                            :width="4"
+                                            :size="18"
+                                            color="info"
+                                            style="margin-right:9px;"
+                                        >
+                                        </v-progress-circular>
+                                    </template>
                                     Update
+                                    <template v-if="!isLoading">
+                                        <i class="bi bi-folder-symlink-fill"></i>
+                                    </template>
                                 </v-btn>
                             </div>
                         </div>
@@ -172,8 +185,21 @@
                                         variant="tonal" 
                                         :color="onSubmitColor"
                                     >
+                                        <template v-if="isLoading">
+                                            <v-progress-circular
+                                                justify='end' 
+                                                indeterminate 
+                                                :width="4"
+                                                :size="18"
+                                                :color="onSubmitColor"
+                                                style="margin-right:9px;"
+                                            >
+                                            </v-progress-circular>
+                                        </template>
                                         {{ textSubmit }}
-                                        <i class="bi bi-arrow-bar-right"></i>
+                                        <template v-if="!isLoading">
+                                            <i class="bi bi-arrow-bar-right"></i>
+                                        </template>
                                     </v-btn>
                                 </v-row>
                             </Form>
@@ -192,6 +218,7 @@
     export default {
         data() {
             return {
+                isLoading: false,
                 headers: [
                     { key: "access_kode", title: "Kode" },
                     { key: "access_name", title: "access Name" },
@@ -220,6 +247,7 @@
         methods: {
             async create(){
                 try {
+                    this.toogleLoading()
                     const data = this.$helper.onSubmit('accessForm')
 
                     const response = await this.$api.post('/access', data ,{
@@ -227,11 +255,12 @@
                             "Content-Type": "application/json",
                         },
                     })
-                    
+                    this.toogleLoading()
                     this.toogleForm()
                     this.$swal.fire(response.data.meta.message)
                     
                 } catch (error) {
+                    this.toogleLoading()
                     const err = await error
                     let message = `
                         Error \n
@@ -253,6 +282,7 @@
             },
             async update(){
                 try {
+                    this.toogleLoading()
                     const data = this.$helper.onSubmit('accessForm')
                     const update = {
                         access_kode   : data.access_kode,
@@ -267,11 +297,12 @@
                             "Content-Type": "application/json",
                         },
                     })
-
+                    this.toogleLoading()
                     this.toogleForm()
                     this.$swal.fire(response.data.meta.message)
 
                 } catch (error) {
+                    this.toogleLoading()
                     const err = await error
                     let message = `
                         Error \n
@@ -337,16 +368,18 @@
                 this.config.roots = Object.keys(data).filter(key => !children.includes(key))
             },
             async updateRoleAccess(){
-                try {                    
+                try {            
+                    this.toogleLoading()        
                     const data = {data : this.nodes}
                     const response = await this.$api.put('/menuaccess/'+this.accessId, data,{
                         headers: {
                             "Content-Type": "application/json",
                         },
                     })
-                    
+                    this.toogleLoading()
                     this.$swal.fire(response.data.meta.message)
                 } catch (error) {
+                    this.toogleLoading()
                     const err = await error
                     let message = `
                         Error \n
@@ -354,7 +387,14 @@
                     `
                     this.$swal.fire(message)
                 }
-            }
+            },
+            async toogleLoading(){
+                if(this.isLoading){
+                    this.isLoading = false
+                }else{
+                    this.isLoading = true
+                }
+            },
         },
     }
 </script>

@@ -173,8 +173,21 @@
                                         variant="tonal" 
                                         :color="onSubmitColor"
                                     >
+                                        <template v-if="isLoading">
+                                            <v-progress-circular
+                                                justify='end' 
+                                                indeterminate 
+                                                :width="4"
+                                                :size="18"
+                                                :color="onSubmitColor"
+                                                style="margin-right:9px;"
+                                            >
+                                            </v-progress-circular>
+                                        </template>
                                         {{ textSubmit }}
-                                        <i class="bi bi-arrow-bar-right"></i>
+                                        <template v-if="!isLoading">
+                                            <i class="bi bi-arrow-bar-right"></i>
+                                        </template>
                                     </v-btn>
                                 </v-row>
                             </Form>
@@ -193,6 +206,7 @@
     export default {
         data() {
             return {
+                isLoading: false,
                 headers: [
                     { key: "menu_kode", title: "Kode" },
                     { key: "menu_name", title: "Menu Name" },
@@ -219,6 +233,7 @@
         methods: {
             async create(){
                 try {
+                    this.toogleLoading()
                     const data = this.$helper.onSubmit('menuForm')
 
                     const response = await this.$api.post('/menu', data ,{
@@ -226,11 +241,12 @@
                             "Content-Type": "application/json",
                         },
                     })
-                    
+                    this.toogleLoading()
                     this.toogleForm()
                     this.$swal.fire(response.data.meta.message)
                     
                 } catch (error) {
+                    this.toogleLoading()
                     const err = await error
                     let message = `
                         Error \n
@@ -252,6 +268,7 @@
             },
             async update(){
                 try {
+                    this.toogleLoading()
                     const data = this.$helper.onSubmit('menuForm')
                     const update = {
                         menu_kode   : data.menu_kode,
@@ -266,11 +283,12 @@
                             "Content-Type": "application/json",
                         },
                     })
-
+                    this.toogleLoading()
                     this.toogleForm()
                     this.$swal.fire(response.data.meta.message)
 
                 } catch (error) {
+                    this.toogleLoading()
                     const err = await error
                     let message = `
                         Error \n
@@ -334,7 +352,14 @@
                 }else{
                     this.toogle = true
                 }
-            }
+            },
+            async toogleLoading(){
+                if(this.isLoading){
+                    this.isLoading = false
+                }else{
+                    this.isLoading = true
+                }
+            },
         },
     }
 </script>
