@@ -82,11 +82,10 @@
 
                 <div class="container">
                     <v-progress-circular 
-                        v-if="isLoading" 
+                        v-if="isLoading"
                         justify='end' 
-                        style=""
                         indeterminate 
-                        color="primary"
+                        color="warning"
                     ></v-progress-circular>
                 </div>
 
@@ -297,8 +296,21 @@
                                             variant="tonal" 
                                             :color="onSubmitColor"
                                         >
+                                            <template v-if="isLoading">
+                                                <v-progress-circular
+                                                    justify='end' 
+                                                    indeterminate 
+                                                    :width="4"
+                                                    :size="18"
+                                                    :color="onSubmitColor"
+                                                    style="margin-right:9px;"
+                                                >
+                                                </v-progress-circular>
+                                            </template>
                                             {{ textSubmit }}
-                                            <i class="bi bi-arrow-bar-right"></i>
+                                            <template v-if="!isLoading">
+                                                <i class="bi bi-arrow-bar-right"></i>
+                                            </template>
                                         </v-btn>    
                                     </v-row>
                                 </div>
@@ -441,6 +453,7 @@
     >
         <img 
             :src="targetImg"
+            style="height: 100%; width: 100%;"
         >
     </Modal>
 
@@ -562,6 +575,7 @@ import html2canvas from 'html2canvas';
 export default {
     data() {
         return {
+            isLoading: false,
             headers: [
                 { key: "Point_kode", title: "Kode" },
                 { key: "Point_name", title: "Point Name" },
@@ -591,8 +605,6 @@ export default {
             indexPoint: [], // show point
             indexPage: 1,
 
-            isLoading: false,
-
             breadcrump: '',
             onSubmit: null,
             onSubmitColor: '',
@@ -613,7 +625,7 @@ export default {
             this.pointsData.tanggal = this.$helper.onDate()
         },
         async get(){
-            this.isLoading = true
+            this.toogleLoading()
             if(this.indexPage == 1){
                 await this.$api.get('/point?auth='+this.$dataAuth.user_id, {
                     headers: {
@@ -622,7 +634,7 @@ export default {
                 }).then(response => {
                     this.indexPoint = response.data.data.data
                 })
-                this.isLoading = false
+                this.toogleLoading()
                 return
             }
 
@@ -635,11 +647,12 @@ export default {
                     ...this.indexPoint,
                     ...response.data.data.data
                 ]
-                this.isLoading = false
+                this.toogleLoading()
             })
         },
         async create(){
             try {
+                this.toogleLoading()
                 let form = this.$helper.onSubmit('PointForm')
 
                 let data = {
@@ -653,11 +666,13 @@ export default {
                     },
                 })
 
-                this.get()
+                this.toogleLoading()
                 this.toogleForm()
+                this.get()
                 this.$swal.fire(response.data.meta.message)
                 
             } catch (error) {
+                this.toogleLoading()
                 const err = await error
                 let message = `
                     Error \n
@@ -744,13 +759,6 @@ export default {
                 return result;
             });
         },
-        async toogleForm(){
-            if(this.toogle){
-                this.toogle = false
-            }else{
-                this.toogle = true
-            }
-        },
         async infinyScroll(event){
             const target = event.target;
             const scrollLeft = target.scrollLeft;
@@ -782,12 +790,25 @@ export default {
                 behavior: 'smooth',
             });
         },
+        async toogleForm(){
+            if(this.toogle){
+                this.toogle = false
+            }else{
+                this.toogle = true
+            }
+        },
         async toogleCreate(){
-            console.log(this.toogleTarget);
             if(this.toogleTarget){
                 this.toogleTarget = false
             }else{
                 this.toogleTarget = true
+            }
+        },
+        async toogleLoading(){
+            if(this.isLoading){
+                this.isLoading = false
+            }else{
+                this.isLoading = true
             }
         },
         async saveImg(){
@@ -817,26 +838,26 @@ export default {
 </script>
 
 <style>
-.container {
-  position: relative;
-  height: 200px; /* Set the desired height */
-}
+    .container {
+    position: relative;
+    height: 200px; /* Set the desired height */
+    }
 
-.container > .v-progress-circular {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.v-table thead tr th{
-    text-align: center !important;
-    white-space: nowrap;
-}
-.v-table tbody tr td{
-    text-align: center !important;
-    white-space: nowrap;
-}
-.v-btn{
-    margin-right: 10px;
-}
+    .container > .v-progress-circular {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    }
+    .v-table thead tr th{
+        text-align: center !important;
+        white-space: nowrap;
+    }
+    .v-table tbody tr td{
+        text-align: center !important;
+        white-space: nowrap;
+    }
+    .v-btn{
+        margin-right: 10px;
+    }
 </style>
