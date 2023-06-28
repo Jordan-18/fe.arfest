@@ -14,25 +14,27 @@
                                 <span class="text-muted fw-semibold fs-7">Point &raquo;</span>
                             </h3>
                             <div class="card-toolbar">
-                                <v-btn class="info" variant="tonal" color="info" 
-                                    @click="() => {
-                                        breadcrump = 'Create'
-                                        onSubmit = create
-                                        onSubmitColor = 'green'
-                                        textSubmit = 'Submit'
-                                        
-                                        Point = []
-                                        pointsData.jarak = ''
-                                        pointsData.jenis_busur = ''
-                                        pointsData.rambahan = ''
-                                        targetAllResult = []
-
-                                        toogleForm()
-                                    }"
-                                >
-                                    <i class="bi bi-plus-circle"></i>
-                                    Start Shooting
-                                </v-btn>
+                                <template v-if="accessStore.create == 1">
+                                    <v-btn class="info" variant="tonal" color="info" 
+                                        @click="() => {
+                                            breadcrump = 'Create'
+                                            onSubmit = create
+                                            onSubmitColor = 'green'
+                                            textSubmit = 'Submit'
+                                            
+                                            Point = []
+                                            pointsData.jarak = ''
+                                            pointsData.jenis_busur = ''
+                                            pointsData.rambahan = ''
+                                            targetAllResult = []
+    
+                                            toogleForm()
+                                        }"
+                                    >
+                                        <i class="bi bi-plus-circle"></i>
+                                        Start Shooting
+                                    </v-btn>
+                                </template>
                             </div>
                         </div>
                         <div class="card-body py-3"></div>
@@ -43,9 +45,15 @@
                     <div class="col-md-3" v-for="(v,i) in indexPoint" :key="index">
                         <div class="card mt-3">
                             <div class="card-body">
-                                <h5 class="card-title">{{v.point_tanggal}}</h5>
+                                <h5 class="card-title">
+                                    {{v.point_tanggal}}
+                                    <template v-if="accessStore.delete == 1">
+                                        <v-btn variant="tonal" color="transparent" style="float: right; margin-right: -20px; margin-top: -10px;" @click="destroy(v)">
+                                            <i class="bi bi-trash-fill" style="color: red;" justify='end'></i>
+                                        </v-btn>
+                                    </template>
+                                </h5>
                                 <h6 class="card-subtitle mb-2 text-muted">{{ v.jenis_busur_name }}</h6>
-                                <!-- <p class="card-text"></p> -->
                                 <v-table>
                                     <tr>
                                         <td>Jarak</td>
@@ -445,126 +453,128 @@
         </div>
     </Modal>
 
-    <!-- Target Img Detail -->
-    <Modal
-        title="Modal Target Result"
-        id="modalTarget"
-
-    >
-        <img 
-            :src="targetImg"
-            style="height: 100%; width: 100%;"
-        >
-    </Modal>
-
     <!-- Modal Detail & print -->
     <Modal 
         title="Detail"
         id="modalDetail"
-        size="large"
+        size="basic"
     >
         <div class="row">
-
-            <v-row justify='end' class="mt-2">
-                <v-btn
-                    color="warning"
-                    variant="tonal"
-                    @click="onSendEmail(Point)"
-                >
-                    <i class="bi bi-envelope-check"></i>
-                    Kirim Email
-                </v-btn>
-
-                <v-btn
-                    color="info"
-                    variant="tonal"
-                    @click="onPrint(Point)"
-                >
-                    <i class="bi bi-printer"></i>
-                    Print
-                </v-btn>
-
-            </v-row>
-
-
-            <v-table class="table table-bordered mt-5">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Nama</th>
-                        <th>Jarak</th>
-                        <th>Tanggal</th>
-                        <th>Jenis Busur</th>
-                        <th>Rambahan</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>{{ Point.username }}</th>
-                        <th>{{ Point.point_jarak }}</th>
-                        <th>{{ Point.point_tanggal }}</th>
-                        <th>{{ Point.jenis_busur_name }}</th>
-                        <th>{{ Point.point_rambahan }}</th>
-                    </tr>
-                    <tr>
-                        <th colspan="4">Archer Turn</th>
-                        <th colspan="2">Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr 
-                        v-for="(v,i) in Point.point_detail" 
-                        :key="i"
+            <template v-if="detailToogle">
+                <v-row justify='end' class="mt-2">
+                    <v-btn
+                        color="warning"
+                        variant="tonal"
+                        @click="onSendEmail(Point)"
                     >
-                        <td>{{ i+1 }}.</td>
-                        <td colspan="2">
-                            <v-table>
-                                <template v-for="i2 in Math.ceil(parseInt(Point.point_jumlah_anak_panah) / 6)">
-                                    <tr>
-                                        <template v-for="i3 in 6">
-                                            <template v-if="(i2 - 1) * 6 + i3 <= (Point.point_jumlah_anak_panah ?? 0)">
-                                                <td>
-                                                    <template v-if="i2 == 1">
-                                                        {{ ((v.point_detail_points).split(','))[i3] }}
-                                                    </template>
-                                                    <template v-else>
-                                                        {{ ((v.point_detail_points).split(','))[(i3+6)] }}
-                                                    </template>
-                                                </td>
+                        <i class="bi bi-envelope-check"></i>
+                        Kirim Email
+                    </v-btn>
+                    
+                    <v-btn
+                        color="info"
+                        variant="tonal"
+                        @click="onPrint(Point)"
+                    >
+                        <i class="bi bi-printer"></i>
+                        Print
+                    </v-btn>
+                </v-row>
+
+                <v-table class="table table-bordered mt-5">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nama</th>
+                            <th>Jarak</th>
+                            <th>Tanggal</th>
+                            <th>Jenis Busur</th>
+                            <th>Rambahan</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>{{ Point.username }}</th>
+                            <th>{{ Point.point_jarak }}</th>
+                            <th>{{ Point.point_tanggal }}</th>
+                            <th>{{ Point.jenis_busur_name }}</th>
+                            <th>{{ Point.point_rambahan }}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Archer Turn</th>
+                            <th colspan="2">Score</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr 
+                            v-for="(v,i) in Point.point_detail" 
+                            :key="i"
+                        >
+                            <td>{{ i+1 }}.</td>
+                            <td colspan="2">
+                                <v-table>
+                                    <template v-for="i2 in Math.ceil(parseInt(Point.point_jumlah_anak_panah) / 6)">
+                                        <tr>
+                                            <template v-for="i3 in 6">
+                                                <template v-if="(i2 - 1) * 6 + i3 <= (Point.point_jumlah_anak_panah ?? 0)">
+                                                    <td>
+                                                        <template v-if="i2 == 1">
+                                                            {{ ((v.point_detail_points).split(','))[i3] }}
+                                                        </template>
+                                                        <template v-else>
+                                                            {{ ((v.point_detail_points).split(','))[(i3+6)] }}
+                                                        </template>
+                                                    </td>
+                                                </template>
                                             </template>
-                                        </template>
-                                    </tr>
-                                </template>
-                            </v-table>
-                        </td>
-                        <td>
-                            <v-table>
-                                <template v-for="i2 in Math.ceil(parseInt(Point.point_jumlah_anak_panah) / 6)">
-                                    <tr>
-                                        <td>
-                                            <template v-if="i2 == 1">
-                                                {{ ((v.point_detail_points).split(',')).slice(0,6).reduce((acc, num) => parseInt(acc) + parseInt(num), 0) }}
-                                            </template>
-                                            <template v-else>
-                                                {{ ((v.point_detail_points).split(',')).slice(6).reduce((acc, num) => parseInt(acc) + parseInt(num), 0) }}
-                                            </template>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </v-table>
-                        </td>
-                        <td>{{ v.point_detail_total }}</td>
-                        <td>
-                            <a 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#modalTarget"
-                                @click="detailTarget(v.point_detail_img)"
-                            >
-                                <img :src="v.point_detail_img" style="height: 100%;">
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </v-table>
+                                        </tr>
+                                    </template>
+                                </v-table>
+                            </td>
+                            <td>
+                                <v-table>
+                                    <template v-for="i2 in Math.ceil(parseInt(Point.point_jumlah_anak_panah) / 6)">
+                                        <tr>
+                                            <td>
+                                                <template v-if="i2 == 1">
+                                                    {{ ((v.point_detail_points).split(',')).slice(0,6).reduce((acc, num) => parseInt(acc) + parseInt(num), 0) }}
+                                                </template>
+                                                <template v-else>
+                                                    {{ ((v.point_detail_points).split(',')).slice(6).reduce((acc, num) => parseInt(acc) + parseInt(num), 0) }}
+                                                </template>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </v-table>
+                            </td>
+                            <td>{{ v.point_detail_total }}</td>
+                            <td>
+                                <img 
+                                    :src="v.point_detail_img" 
+                                    style="height: 100%;"
+                                    @mouseover="detailTarget(v.point_detail_img)"
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </v-table>
+            </template>
+    
+            <template v-else>
+                <v-row justify='start' class="mt-2">
+                    <div class="card-toolbar">
+                        <v-btn class="light " variant="tonal" color="light"  @mouseover="toogleDetailPoint">
+                            <i class="bi bi-arrow-bar-left" style="color: black;"></i>
+                        </v-btn>
+                    </div>
+                </v-row>
+
+                <img 
+                    :src="targetImg"
+                    style="height: 100%; width: 100%;"
+                >
+            </template>
+
         </div>
     </Modal>
 
@@ -576,6 +586,7 @@ export default {
     data() {
         return {
             isLoading: false,
+            accessStore: this.$store.modules.Access.getters.getData,
             headers: [
                 { key: "Point_kode", title: "Kode" },
                 { key: "Point_name", title: "Point Name" },
@@ -608,7 +619,9 @@ export default {
             breadcrump: '',
             onSubmit: null,
             onSubmitColor: '',
-            textSubmit:''
+            textSubmit:'',
+
+            detailToogle: true,
         };
     },
     mounted() {
@@ -683,6 +696,7 @@ export default {
 
         },
         async show(data){
+            this.detailToogle = true
             this.Point = data
         },
         async update(){
@@ -726,11 +740,14 @@ export default {
                     confirmButtonText: 'Yes !'
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        const response = await this.$api.delete('/Point/'+data.Point_id,{
+                        const response = await this.$api.delete('/point/'+data.point_id,{
                             headers: {
                                 "Content-Type": "application/json",
                             },
                         })
+                        this.indexPoint = []
+                        this.indexPage = 1
+                        this.get()
                         this.$swal.fire(response.data.meta.message)
                     }
                 })
@@ -811,6 +828,13 @@ export default {
                 this.isLoading = true
             }
         },
+        async toogleDetailPoint(){
+            if(this.detailToogle){
+                this.detailToogle = false
+            }else{
+                this.detailToogle = true
+            }
+        },
         async saveImg(){
             const toCapture = this.$refs.target;
 
@@ -826,6 +850,7 @@ export default {
         },
         async detailTarget(img){
             this.targetImg = img
+            this.toogleDetailPoint()
         },
         async onSendEmail(data){
             console.log(data);
@@ -839,17 +864,17 @@ export default {
 
 <style>
     .container {
-    position: relative;
-    height: 200px; /* Set the desired height */
+        position: relative;
+        height: 200px; /* Set the desired height */
     }
 
     .container > .v-progress-circular {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
-    .v-table thead tr th{
+    /* .v-table thead tr th{
         text-align: center !important;
         white-space: nowrap;
     }
@@ -859,5 +884,5 @@ export default {
     }
     .v-btn{
         margin-right: 10px;
-    }
+    } */
 </style>

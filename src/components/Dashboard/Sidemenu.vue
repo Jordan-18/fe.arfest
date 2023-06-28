@@ -2,7 +2,7 @@
 <div class="aside-user mb-5 mb-lg-10" id="kt_aside_user">
     <div class="d-flex align-items-center flex-column">
         <div class="symbol symbol-75px mb-4">
-            <img src="@/assets/media/avatars/300-1.jpg" alt="" />
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="" />
         </div>
         <div class="text-center">
             <router-link to="/" class="text-gray-800 text-hover-primary fs-4 fw-bolder">{{ username }}</router-link>
@@ -41,7 +41,12 @@
             
             <div data-kt-menu-trigger="click" class="menu-item" v-for="(v1, i1) in menuAccess" :key="i1" :class="{'here menu-accordion' : (v1.menus.length > 0)}">
 
-                <router-link class="menu-link" :to="v1.menu_endpoint" :class="{'active' : isActive(v1.menu_endpoint)}" v-if="(v1.menus).length < 0">
+                <router-link 
+                    class="menu-link" 
+                    :to="v1.menu_endpoint" 
+                    :class="{'active' : isActive(v1.menu_endpoint)}" 
+                    v-if="(v1.menus).length < 0"
+                >
                     <span class="menu-icon">
                         <span class="svg-icon svg-icon-5">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +75,12 @@
                     <div v-for="(v2, i2) in v1.menus" :key="i2">
                         
                         <div class="menu-item" v-if="v2.menus.length == 0">
-                            <router-link class="menu-link" :to="v2.menu_endpoint" :class="{'active' : isActive(v2.menu_endpoint)}">
+                            <router-link 
+                                class="menu-link" 
+                                :to="v2.menu_endpoint" 
+                                @click="queryNavigate(v2)"
+                                :class="{'active' : isActive(v2.menu_endpoint)}"
+                            >
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -79,19 +89,25 @@
                         </div>
 
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion" v-if="v2.menus.length > 0">
-
-                            <router-link class="menu-link" :to="v2.menu_endpoint" :class="{'active' : isActive(v2.menu_endpoint)}">
+                            <router-link 
+                                class="menu-link" 
+                                :to="v2.menu_endpoint" 
+                                :class="{'active' : isActive(v2.menu_endpoint)}"
+                            >
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">{{ v2.menu_name }}</span>
+                                <span class="menu-title">{{ v2.menu_name }} {{ v2.create }}</span>
                                 <span class="menu-arrow"></span>
                             </router-link>
 
                             <div class="menu-sub menu-sub-accordion" :class="{'show' : onDataActive(v2.menus)}">
                                 <div v-for="(v3, i3) in v2.menus" :key="i3" class="menu-item">
                                     <div class="menu-item">
-                                        <router-link class="menu-link" :to="v3.menu_endpoint" :class="{'active' : isActive(v3.menu_endpoint)}">
+                                        <router-link 
+                                            class="menu-link" 
+                                            :to="v3.menu_endpoint" 
+                                            :class="{'active' : isActive(v3.menu_endpoint)}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -106,51 +122,6 @@
                 </div>
 
             </div>
-
-            <!-- <div data-kt-menu-trigger="click" class="menu-item here menu-accordion" :class="{'show' : (['/access','/menu','/user']).includes(this.$route.path)}">
-                <span class="menu-link">
-                    <span class="menu-icon">
-                        <span class="svg-icon svg-icon-5">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor" />
-                                <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor" />
-                            </svg>
-                        </span>
-                    </span>
-                    <span class="menu-title">Setting</span>
-                    <span class="menu-arrow"></span>
-                </span>
-
-                <div class="menu-sub menu-sub-accordion">
-
-                    <div class="menu-item">
-                        <router-link class="menu-link" to="/access" :class="{'active' : isActive('/access')}">
-                            <span class="menu-bullet">
-                                <span class="bullet bullet-dot"></span>
-                            </span>
-                            <span class="menu-title">Access</span>
-                        </router-link>
-                    </div>
-
-                    <div class="menu-item">
-                        <router-link class="menu-link" to="/menu" :class="{'active' : isActive('/menu')}">
-                            <span class="menu-bullet">
-                                <span class="bullet bullet-dot"></span>
-                            </span>
-                            <span class="menu-title">Menu</span>
-                        </router-link>
-                    </div>
-
-                    <div class="menu-item">
-                        <router-link class="menu-link" to="/user" :class="{'active' : isActive('/user')}">
-                            <span class="menu-bullet">
-                                <span class="bullet bullet-dot"></span>
-                            </span>
-                            <span class="menu-title">User</span>
-                        </router-link>
-                    </div>
-                </div>
-            </div> -->
 
         </div>
     </div>
@@ -241,11 +212,9 @@ export default {
                 this.$swal.fire(message)
             }
         },
-
         isActive(endPoint){
             return this.$route.path == endPoint
         },
-
         onDataActive(data, data2 = []){
             let response =  data.map(menu => menu.menu_endpoint)
 
@@ -258,7 +227,6 @@ export default {
             
             return response.includes(this.$route.path)
         },
-
         Logout(){
             this.$swal.fire({
                 title: 'Logout',
@@ -268,26 +236,40 @@ export default {
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes !'
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
+                    await this.$api.post('/logout',{
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }).then((response) => {
+                        
+                        this.$store.modules.Auth.dispatch('loginData',{})
+                        this.$store.modules.Access.dispatch('setData',{})
+                        localStorage.removeItem('accessRoute')
+                        window.location.href = '/login';
 
-                    this.$cookies.remove('loggedIn')
-                    this.$cookies.remove('menuData')
-                    this.$cookies.remove('loginData')
+                        this.$swal.fire(
+                            'Log out Successfully!',
+                            response.data.meta.message,
+                            'success'
+                        )
 
-                    localStorage.removeItem('accessRoute')
-
-                    window.location.href = '/';
-
-                    this.$swal.fire(
-                        'Log out Successfully!',
-                        'Your Log out Successfully.',
-                        'success'
-                    )
+                        
+                        
+                    })
                 }
             })
 			
-		}
+		},
+        async queryNavigate(data){
+            this.$store.modules.Access.dispatch('setData', {
+                create: data.create,
+                read: data.read,
+                update: data.update,
+                delete: data.delete
+            })
+        }
     }
 }
 </script>

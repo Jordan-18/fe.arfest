@@ -14,30 +14,22 @@
 
 <script>
 export default {
-	data() {
-        return {
-            num:0,
-        }
-    },
   	computed: {
 		isLoginPage() {
-			let isLoginIn = this.$cookies.get('loggedIn') ?? false
-
-			if(isLoginIn){
-				return isLoginIn
-			}else{
-				let middleware = this.$route.meta.requiresAuth ?? true
-				let routeAuth = middleware && this.num != 0 ? '/login' : this.$route.path
-
-				if((isLoginIn == false && routeAuth != "/")){
-					this.$router.push({ 
-						path: routeAuth 
-					})
-					return isLoginIn
-				}
-			}
+			let isLoggedIn = this.$store.modules.Auth.getters.loginData.loggedIn || false;
+			let requireAuth = this.$route.meta.requireAuth ?? true;
+		
+			// this.$store.modules.Auth.dispatch('logout')
 			
-			this.num++
+			if(!isLoggedIn && !requireAuth){
+				this.$router.push({
+					path: this.$route.path
+				});
+				return isLoggedIn;
+			}
+			if(isLoggedIn){
+				return isLoggedIn;
+			}
 		},
 	},
 };

@@ -15,20 +15,22 @@
                                 <span class="text-muted fw-semibold fs-7">user &raquo;</span>
                             </h3>
                             <div class="card-toolbar">
-                                <v-btn class="success" variant="tonal" color="success" 
-                                    @click="() => {
-                                        breadcrump = 'Create'
-                                        onSubmit = create
-                                        onSubmitColor = 'green'
-                                        textSubmit = 'Submit'
-
-                                        toogleForm()
-                                    }" 
-                                    v-on:click="user = []"
-                                >
-                                    <i class="bi bi-plus-circle"></i>
-                                    Create
-                                </v-btn>
+                                <template v-if="accessStore.create == 1">
+                                    <v-btn class="success" variant="tonal" color="success" 
+                                        @click="() => {
+                                            breadcrump = 'Create'
+                                            onSubmit = create
+                                            onSubmitColor = 'green'
+                                            textSubmit = 'Submit'
+    
+                                            toogleForm()
+                                        }" 
+                                        v-on:click="user = []"
+                                    >
+                                        <i class="bi bi-plus-circle"></i>
+                                        Create
+                                    </v-btn>
+                                </template>
                             </div>
                         </div>
                         <div class="card-body py-3">
@@ -40,23 +42,27 @@
                             >
                                 <template #default="{data}">
                                     <div class="row">
-                                        <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="danger" v-on:click="destroy(data.raw)">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </v-btn>
+                                        <template v-if="accessStore.delete == 1">
+                                            <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="danger" v-on:click="destroy(data.raw)">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </v-btn>
+                                        </template>
     
-                                        <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="warning" 
-                                            @click="() => {
-                                                breadcrump = 'Update'
-                                                onSubmit = update
-                                                onSubmitColor = 'secondary'
-                                                textSubmit = 'Update'
-    
-                                                toogleForm()
-                                            }" 
-                                            v-on:click="show(data.raw)"
-                                        >
-                                            <i class="bi bi-pencil-square"></i>
-                                        </v-btn>
+                                        <template v-if="accessStore.update == 1">
+                                            <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="warning" 
+                                                @click="() => {
+                                                    breadcrump = 'Update'
+                                                    onSubmit = update
+                                                    onSubmitColor = 'secondary'
+                                                    textSubmit = 'Update'
+        
+                                                    toogleForm()
+                                                }" 
+                                                v-on:click="show(data.raw)"
+                                            >
+                                                <i class="bi bi-pencil-square"></i>
+                                            </v-btn>
+                                        </template>
                                     </div>
                                 </template>
 
@@ -204,6 +210,7 @@
         data() {
             return {
                 isLoading: false,
+                accessStore: this.$store.modules.Access.getters.getData,
                 headers: [
                     { key: "name", title: "name" },
                     { key: "username", title: "username" },

@@ -71,8 +71,8 @@ export default {
                 })
 
                 if(response.status == 200){
-                    let loggedIn    = true
                     let loginData   = {
+                        loggedIn    : true,
                         token_type  : response.data.data.token_type,
                         token       : response.data.data.access_token,
                         user_id     : response.data.data.user.user_id,
@@ -81,10 +81,12 @@ export default {
                         email       : response.data.data.user.email,
                         username    : response.data.data.user.username                 
                     }
-                    loginData = this.$helper.encrypData(loginData)
+                    // loginData = this.$helper.encrypData(loginData)
 
-                    this.$cookies.set('loggedIn', loggedIn)
-                    this.$cookies.set('loginData', loginData)
+                    this.$store.modules.Auth.dispatch('loginData',loginData)
+                    
+                    // this.$cookies.set('loggedIn', loggedIn)
+                    // this.$cookies.set('loginData', loginData)
                     
                     this.$router.push('/')
 
@@ -118,8 +120,8 @@ export default {
 
             if (params.has('response')) {
                 const response = JSON.parse(params.get('response'));
-                let loggedIn    = true
                 let loginData   = {
+                    loggedIn    : true,
                     token_type  : response.original.data.token_type,
                     token       : response.original.data.access_token,
                     name        : response.original.data.user.name,
@@ -128,10 +130,11 @@ export default {
                     email       : response.original.data.user.email,
                     username    : response.original.data.user.username                 
                 }
-                loginData = this.$helper.encrypData(loginData)
+                // loginData = this.$helper.encrypData(loginData)
 
-                this.$cookies.set('loggedIn', loggedIn)
-                this.$cookies.set('loginData', loginData)
+                this.$store.modules.Auth.dispatch('loginData',loginData)
+                // this.$cookies.set('loggedIn', loggedIn)
+                // this.$cookies.set('loginData', loginData)
 
                 this.$router.push('/')
 
