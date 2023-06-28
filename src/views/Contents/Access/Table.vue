@@ -15,20 +15,22 @@
                                 <span class="text-muted fw-semibold fs-7">access &raquo;</span>
                             </h3>
                             <div class="card-toolbar">
-                                <v-btn class="success" variant="tonal" color="success" 
-                                    @click="() => {
-                                        breadcrump = 'Create'
-                                        onSubmit = create
-                                        onSubmitColor = 'green'
-                                        textSubmit = 'Submit'
-
-                                        toogleForm()
-                                    }" 
-                                    v-on:click="access = []"
-                                >
-                                    <i class="bi bi-plus-circle"></i>
-                                    Create
-                                </v-btn>
+                                <template v-if="accessStore.create == 1">
+                                    <v-btn class="success" variant="tonal" color="success" 
+                                        @click="() => {
+                                            breadcrump = 'Create'
+                                            onSubmit = create
+                                            onSubmitColor = 'green'
+                                            textSubmit = 'Submit'
+    
+                                            toogleForm()
+                                        }" 
+                                        v-on:click="access = []"
+                                    >
+                                        <i class="bi bi-plus-circle"></i>
+                                        Create
+                                    </v-btn>
+                                </template>
                             </div>
                         </div>
                         <div class="card-body py-3">
@@ -40,23 +42,27 @@
                             >
                                 <template #default="{data}">
                                     <div class="row">
-                                        <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="danger" v-on:click="destroy(data.raw)">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </v-btn>
+                                        <template v-if="accessStore.delete == 1">
+                                            <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="danger" v-on:click="destroy(data.raw)">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </v-btn>
+                                        </template>
     
-                                        <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="warning" 
-                                            @click="() => {
-                                                breadcrump = 'Update'
-                                                onSubmit = update
-                                                onSubmitColor = 'secondary'
-                                                textSubmit = 'Update'
-    
-                                                toogleForm()
-                                            }" 
-                                            v-on:click="show(data.raw)"
-                                        >
-                                            <i class="bi bi-pencil-square"></i>
-                                        </v-btn>
+                                        <template v-if="accessStore.update == 1">
+                                            <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="warning" 
+                                                @click="() => {
+                                                    breadcrump = 'Update'
+                                                    onSubmit = update
+                                                    onSubmitColor = 'secondary'
+                                                    textSubmit = 'Update'
+        
+                                                    toogleForm()
+                                                }" 
+                                                v-on:click="show(data.raw)"
+                                            >
+                                                <i class="bi bi-pencil-square"></i>
+                                            </v-btn>
+                                        </template>
     
                                         <v-btn class="" size="small" icon="mdi-vuetify" fab dark small variant="tonal" color="primary" v-on:click="roleAccess(data.raw)">
                                             <i class="bi bi-arrow-right-short"></i>
@@ -81,28 +87,30 @@
                                 <span class="text-muted fw-semibold fs-7">{{ accessName }}</span>
                             </h3>
                             <div class="card-toolbar">
-                                <v-btn 
-                                    class="info" 
-                                    variant="tonal" 
-                                    color="info"
-                                    @click="updateRoleAccess"
-                                >
-                                    <template v-if="isLoading">
-                                        <v-progress-circular
-                                            justify='end' 
-                                            indeterminate 
-                                            :width="4"
-                                            :size="18"
-                                            color="info"
-                                            style="margin-right:9px;"
-                                        >
-                                        </v-progress-circular>
-                                    </template>
-                                    Update
-                                    <template v-if="!isLoading">
-                                        <i class="bi bi-folder-symlink-fill"></i>
-                                    </template>
-                                </v-btn>
+                                <template v-if="accessStore.update == 1">
+                                    <v-btn 
+                                        class="info" 
+                                        variant="tonal" 
+                                        color="info"
+                                        @click="updateRoleAccess"
+                                    >
+                                        <template v-if="isLoading">
+                                            <v-progress-circular
+                                                justify='end' 
+                                                indeterminate 
+                                                :width="4"
+                                                :size="18"
+                                                color="info"
+                                                style="margin-right:9px;"
+                                            >
+                                            </v-progress-circular>
+                                        </template>
+                                        Update
+                                        <template v-if="!isLoading">
+                                            <i class="bi bi-folder-symlink-fill"></i>
+                                        </template>
+                                    </v-btn>
+                                </template>
                             </div>
                         </div>
                         <div class="card-body py-3">
@@ -219,6 +227,7 @@
         data() {
             return {
                 isLoading: false,
+                accessStore: this.$store.modules.Access.getters.getData,
                 headers: [
                     { key: "access_kode", title: "Kode" },
                     { key: "access_name", title: "access Name" },
@@ -357,12 +366,15 @@
 
                 let data = resposne.data.data
                 let children = []
-        
+                
                 for (let key in data) {
-                    data[key]['children'].forEach(child => {
-                        children.push(child)
-                    });
+                    if(data[key]['children']){
+                        data[key]['children'].forEach(child => {
+                            children.push(child)
+                        });
+                    }
                 }
+
         
                 this.nodes = data
                 this.config.roots = Object.keys(data).filter(key => !children.includes(key))
@@ -371,13 +383,18 @@
                 try {            
                     this.toogleLoading()        
                     const data = {data : this.nodes}
-                    const response = await this.$api.put('/menuaccess/'+this.accessId, data,{
+                    await this.$api.put('/menuaccess/'+this.accessId, data,{
                         headers: {
                             "Content-Type": "application/json",
                         },
+                    }).then(async (response)=>{
+                        this.toogleLoading()
+                        await this.$swal.fire(response.data.meta.message)
+                        if(this.$dataAuth.access == this.accessId){
+                            window.location.href = '/';
+                        }
+
                     })
-                    this.toogleLoading()
-                    this.$swal.fire(response.data.meta.message)
                 } catch (error) {
                     this.toogleLoading()
                     const err = await error

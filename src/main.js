@@ -1,13 +1,16 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './routers/app'
-import Cookies from 'js-cookie'
-import * as Helper from '@/helpers/helpers';
-import api from '@/api';
 import globalComponent from '@/components/Material/index'
 import { ModelSelect } from 'vue-search-select'
 import 'vue-search-select/dist/VueSearchSelect.css'
+
+import router from './routers/app'
+import Cookies from 'js-cookie'
+import * as Helper from '@/utils/helpers';
+import api from '@/utils/api';
 import Swal from 'sweetalert2';
+
+import store from '@/store/index'
 
 // Vuetify
 import 'vuetify/styles'
@@ -33,11 +36,15 @@ async function main(){
       directives,
   })
 
+  // global
   app.config.globalProperties.$cookies = Cookies
   app.config.globalProperties.$router = router
   app.config.globalProperties.$api = api
   app.config.globalProperties.$helper = Helper
   app.config.globalProperties.$swal = Swal
+
+  // store
+  app.config.globalProperties.$store = store
 
   router.beforeEach((to, from, next) => {      
     if(Cookies.get('loggedIn')){
@@ -52,9 +59,9 @@ async function main(){
     next()
   })
 
-  if(Cookies.get('loggedIn')){
-    const Auth = Helper.decrypData(Cookies.get('loginData'))
-    app.config.globalProperties.$dataAuth = Helper.decrypData(Cookies.get('loginData'))
+  if(store.modules.Auth.getters.loginData.loggedIn){
+    const Auth = store.modules.Auth.getters.loginData
+    app.config.globalProperties.$dataAuth = Auth
     api.defaults.headers.common['Authorization'] = `${Auth.token_type} ${Auth.token}`;
   }
 
@@ -68,6 +75,5 @@ async function main(){
   app.use(router)
   app.mount('#kt_body')
 }
-
 
 main();

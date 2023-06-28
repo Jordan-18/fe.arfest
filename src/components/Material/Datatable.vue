@@ -79,13 +79,14 @@
 
             try {                
                 var url = '/'+this.$props.modules+'?index='
-
                 if(this.search != ''){
                     url = url+'&search='+this.search
                 }
+
                 if(this.currentPage != 1){
                     url = url+'&page='+this.currentPage
                 }
+                
                 if(this.itemsPerPage != 10 && this.itemsPerPage > 0){
                     url = url+'&limit='+this.itemsPerPage
                 }
