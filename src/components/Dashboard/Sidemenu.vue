@@ -254,9 +254,6 @@ export default {
                             response.data.meta.message,
                             'success'
                         )
-
-                        
-                        
                     })
                 }
             })

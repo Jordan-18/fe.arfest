@@ -18,8 +18,6 @@ export default {
 		isLoginPage() {
 			let isLoggedIn = this.$store.modules.Auth.getters.loginData.loggedIn || false;
 			let requireAuth = this.$route.meta.requireAuth ?? true;
-		
-			// this.$store.modules.Auth.dispatch('logout')
 			
 			if(!isLoggedIn && !requireAuth){
 				this.$router.push({
