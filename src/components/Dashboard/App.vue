@@ -1,6 +1,7 @@
 <script setup>
   import Header from './Header.vue'
   import Sidemenu from './Sidemenu.vue'
+  import Bottommenu from './Bottommenu.vue'
   import Footer from './Footer.vue'
 </script>
 <style>
@@ -30,10 +31,10 @@
 				style="background-color:#eeb72d !important;"
 				>
 				<div class="aside-logo flex-column-auto px-9 mb-9 mb-lg-17 mx-auto" id="kt_aside_logo">
-					<router-link to="/">
+					<!-- <router-link to="/">
 						<img alt="Logo" src="@/assets/media/logos/default.svg" class="h-30px logo theme-light-show" />
 						<img alt="Logo" src="@/assets/media/logos/default-dark.svg" class="h-30px logo theme-dark-show" />
-					</router-link>
+					</router-link> -->
 				</div>
 				<Sidemenu> </Sidemenu>
 
@@ -44,6 +45,8 @@
 				<router-view></router-view>
 
 				<Footer></Footer>
+
+				<Bottommenu></Bottommenu>
 			</div>
 		</div>
 	</div>
