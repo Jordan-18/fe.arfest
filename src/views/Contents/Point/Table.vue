@@ -168,7 +168,7 @@
                                         :items="selectJenis"
                                         @change="scrollRight"
                                         v-on:change="(event) => {
-                                            this.selectJenis.forEach(item => {
+                                            selectJenis.forEach(item => {
                                                 if(item.value == event){
                                                     result = item.text
                                                 }
