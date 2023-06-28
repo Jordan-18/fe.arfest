@@ -90,18 +90,30 @@
                             response.data.meta.message,
                             'success'
                         )
-
-                        
-                        
                     })
                 }
             })
 			
 		},
         async onEndpoint(endpoint){
+            this.queryNavigate({
+                create  :1,
+                read    :1,
+                update  :0,
+                delete  :0,
+            })
+            
             this.$router.push({
                 path: endpoint
             });
+        },
+        async queryNavigate(data){
+            this.$store.modules.Access.dispatch('setData', {
+                create: data.create,
+                read: data.read,
+                update: data.update,
+                delete: data.delete
+            })
         }
     },
   }
