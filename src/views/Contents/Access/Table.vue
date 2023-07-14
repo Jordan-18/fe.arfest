@@ -192,6 +192,7 @@
                                         fab dark small 
                                         variant="tonal" 
                                         :color="onSubmitColor"
+                                        :disabled="isLoading"
                                     >
                                         <template v-if="isLoading">
                                             <v-progress-circular
@@ -247,6 +248,7 @@
                     checkboxes: true,
                     checkMode: 0,
                 },
+                access:'',
                 accessName:'',
                 accessId:'',
             };
@@ -391,6 +393,7 @@
                         this.toogleLoading()
                         await this.$swal.fire(response.data.meta.message)
                         if(this.$dataAuth.access == this.accessId){
+                            localStorage.removeItem('accessRoute')
                             window.location.href = '/';
                         }
 

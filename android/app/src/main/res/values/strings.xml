@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">arfest</string>
+    <string name="title_activity_main">arfest</string>
+    <string name="package_name">com.example.arfest</string>
+    <string name="custom_url_scheme">com.example.arfest</string>
+</resources>

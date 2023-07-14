@@ -142,6 +142,7 @@
                                         fab dark small 
                                         variant="tonal" 
                                         :color="onSubmitColor"
+                                        :disabled="isLoading"
                                     >
                                         <template v-if="isLoading">
                                             <v-progress-circular

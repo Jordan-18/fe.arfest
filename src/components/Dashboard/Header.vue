@@ -16,7 +16,15 @@
             </div>
         </div>
         <div class="d-flex align-items-center flex-shrink-0">
-            <div class="d-flex align-items-center ms-3 ms-lg-4" style="display: none !important;">
+            <v-switch 
+                inset 
+                v-model="toogleTheme"
+                color="#E0E0E0"
+                :label="`${toogleTheme ? 'Light Theme' : 'Dark Theme'}`" 
+                @change="themeChange"
+                style="display: none !important;"
+            ></v-switch>
+            <div class="d-flex align-items-center ms-3 ms-lg-4" >
                 <a href="#" class="btn btn-icon btn-color-gray-700 btn-active-color-primary btn-outline w-40px h-40px" data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                     <span class="svg-icon theme-light-show svg-icon-2">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,8 +49,8 @@
                     </span>
                 </a>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-muted menu-active-bg menu-state-color fw-semibold py-4 fs-base w-175px" data-kt-menu="true" data-kt-element="theme-mode-menu">
-                    <div class="menu-item px-3 my-0">
-                        <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
+                    <div class="menu-item px-3 my-0" @click="onSetTheme('light')">
+                        <a href="#" class="menu-link px-3 py-2" :class="toogleTheme ? 'active' : ''">
                             <span class="menu-icon" data-kt-element="icon">
                                 <span class="svg-icon svg-icon-3">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,8 +69,8 @@
                             <span class="menu-title">Light</span>
                         </a>
                     </div>
-                    <div class="menu-item px-3 my-0">
-                        <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
+                    <div class="menu-item px-3 my-0" @click="onSetTheme('dark')">
+                        <a href="#" class="menu-link px-3 py-2" :class="!toogleTheme ? 'active' : ''">
                             <span class="menu-icon" data-kt-element="icon">
                                 <span class="svg-icon svg-icon-3">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,7 +84,7 @@
                             <span class="menu-title">Dark</span>
                         </a>
                     </div>
-                    <div class="menu-item px-3 my-0">
+                    <div class="menu-item px-3 my-0" @click="onReload">
                         <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="system">
                             <span class="menu-icon" data-kt-element="icon">
                                 <span class="svg-icon svg-icon-3">
@@ -103,7 +111,33 @@ export default {
         },
         breadcrumb(){
             return this.$route.meta.breadcrumb || '';
+        },
+    },
+    data() {
+        return {
+            toogleTheme: localStorage.getItem('data-theme') == 'light' ? true : false
         }
-    }
+    },
+    methods: {
+        onSetTheme(theme){
+            localStorage.setItem('data-theme', theme)
+            localStorage.setItem('data-theme-mode', theme)
+                window.location.reload(true);
+        },
+        onReload(){
+            window.location.reload(true);
+        },
+        themeChange(){
+            if(this.toogleTheme){
+                localStorage.setItem('data-theme', 'light')
+                localStorage.setItem('data-theme-mode', 'light')
+                window.location.reload(true);
+            }else{
+                localStorage.setItem('data-theme', 'dark')
+                localStorage.setItem('data-theme-mode', 'dark')
+                window.location.reload(true);
+            }
+        }
+    },
 }
 </script>

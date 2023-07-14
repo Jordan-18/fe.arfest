@@ -3,25 +3,19 @@ import {onAccess} from '@/utils/Access';
 import {isAuth} from '@/utils/isAuth';
 
 import Access from '@/views/Contents/Access/Table.vue'
-import Dashboard from '@/views/Contents/Dashboard/Dashboard.vue'
+// import Dashboard from '@/views/Contents/Dashboard/Dashboard.vue'
+import * as Dashboard from '@/views/Contents/Dashboard/Route.js'
 import Menu from '@/views/Contents/Menu/Table.vue'
+import Publisher from '@/views/Contents/Publisher/Table.vue'
 import User from '@/views/Contents/User/Table.vue'
 import Point from '@/views/Contents/Point/Table.vue'
-import Event from '@/views/Contents/Event/Table.vue'
 import JenisBusur from '@/views/Contents/JenisBusur/Table.vue'
+// import Event from '@/views/Contents/Event/Table.vue'
+import * as Event from '@/views/Contents/Event/Route.js'
 
 export const route = 
 [
-    { 
-        path: '/',
-        component: Dashboard,
-        beforeEnter: [
-            isAuth
-        ],
-        meta: {
-            title: 'Dashboad',
-        }
-    },
+    ...Dashboard.route,
     { 
         path: '/Menu', 
         component: Menu,
@@ -71,18 +65,6 @@ export const route =
         }
     },
     { 
-        path: '/events', 
-        component: Event,
-        beforeEnter: [
-            onAccess,
-            isAuth
-        ],
-        meta: {
-            title: 'Event',
-            breadcrumb : 'event',
-        }
-    },
-    { 
         path: '/jenis-busur', 
         component: JenisBusur,
         beforeEnter: [
@@ -94,4 +76,17 @@ export const route =
             breadcrumb : 'Jenis Busur',
         }
     },
+    { 
+        path: '/event-publish', 
+        component: Publisher,
+        beforeEnter: [
+            onAccess,
+            isAuth
+        ],
+        meta: {
+            title: 'Event to Publish',
+            breadcrumb : 'data',
+        }
+    },
+    ...Event.route,
 ]

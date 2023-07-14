@@ -28,7 +28,7 @@
 				data-kt-drawer-width="{default:'200px', '300px': '250px'}" 
 				data-kt-drawer-direction="start" 
 				data-kt-drawer-toggle="#kt_aside_toggle"
-				style="background-color:#eeb72d !important;"
+				:style="backgroundColor"
 				>
 				<div class="aside-logo flex-column-auto px-9 mb-9 mb-lg-17 mx-auto" id="kt_aside_logo">
 					<!-- <router-link to="/">
@@ -51,3 +51,13 @@
 		</div>
 	</div>
 </template>
+
+<script>
+	export default {
+		data() {
+			return {
+				backgroundColor : localStorage.getItem('data-theme') == 'light' ? 'background-color:#eeb72d !important;' : 'background-color:#112649 !important;',
+			}
+		},
+	}
+</script>
