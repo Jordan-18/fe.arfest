@@ -9,17 +9,24 @@
             mode="shift"
         >
 
-        <v-btn  @click="onEndpoint('/')">
+        <v-btn  @click="onEndpoint('/')" :class="isActive('/') ? 'v-btn--selected v-btn--active' : ''">
             <i class="bi bi-file-post" style="color: white;font-size: 30px;"></i>
             <span style="color: white;">
                 Dashboard
             </span>
         </v-btn>
 
-        <v-btn  @click="onEndpoint('/point')">
+        <v-btn  @click="onEndpoint('/point')" :class="isActive('/point') ? 'v-btn--selected v-btn--active' :  ''">
             <i class="bi bi-bullseye" style="color: white; font-size: 30px;"></i>
             <span style="color: white;">
                 Point
+            </span>
+        </v-btn>
+
+        <v-btn  @click="onEndpoint('/events')" :class="isActive('/events') ? 'v-btn--selected v-btn--active' : ''">
+            <i class="bi bi-calendar2-event" style="color: white; font-size: 28px;"></i>
+            <span style="color: white;">
+                Event
             </span>
         </v-btn>
 
@@ -35,19 +42,21 @@
 
 <script>
   export default {
-    data: () => ({ 
-        value: 0,
-        active: false
-    }),
+    // data: () => ({ }),
+    data() {
+        return {
+            value: 0,
+            active: false,
+        }
+    },
 
     computed: {
       color () {
-        switch (this.value) {
-          case 0: return '#eeb72d'
-          case 1: return '#eeb72d'
-          case 2: return '#eeb72d'
-          default: return '#eeb72d'
+        if(localStorage.getItem('data-theme') == 'light'){
+            return '#eeb72d'
         }
+        return '#112649'
+        // return '#424242'
       },
     },
     mounted() {
@@ -62,6 +71,9 @@
             this.$nextTick(() => {
                 this.active = window.innerWidth <= 768; // Adjust the breakpoint as needed
             });
+        },
+        isActive(endPoint){
+            return this.$route.path == endPoint
         },
         Logout(){
             this.$swal.fire({

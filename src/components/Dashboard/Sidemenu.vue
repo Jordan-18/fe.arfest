@@ -35,11 +35,31 @@
                             </svg>
                         </span>
                     </span>
-                    <span class="menu-title">Dashboard</span>
+                    <span class="menu-title"><strong>Dashboard</strong></span>
                 </router-link>
             </div>
             
             <div data-kt-menu-trigger="click" class="menu-item" v-for="(v1, i1) in menuAccess" :key="i1" :class="{'here menu-accordion' : (v1.menus.length > 0)}">
+
+                <div class="menu-item">
+                    <router-link 
+                        class="menu-link"   
+                        :to="v1.menu_endpoint" 
+                        @click="queryNavigate(v1)"
+                        :class="{'active' : isActive(v1.menu_endpoint)}"
+                        v-if="v1.menus.length == 0"
+                    >
+                        <span class="menu-icon">
+                            <span class="svg-icon svg-icon-5">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.4 11H3C2.4 11 2 11.4 2 12C2 12.6 2.4 13 3 13H14.4V11Z" fill="currentColor" />
+                                    <path opacity="0.3" d="M14.4 20V4L21.7 11.3C22.1 11.7 22.1 12.3 21.7 12.7L14.4 20Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </span>
+                        <span class="menu-title"><strong>{{ v1.menu_name }}</strong></span>
+                    </router-link>
+                </div>
 
                 <router-link 
                     class="menu-link" 
@@ -70,10 +90,9 @@
                     <span class="menu-title">{{ v1.menu_name }}</span>
                     <span class="menu-arrow"></span>
                 </span>
-                
+
                 <div class="menu-sub menu-sub-accordion" :class="{'show' : onDataActive(v1.menus, v1.menus)}">
                     <div v-for="(v2, i2) in v1.menus" :key="i2">
-                        
                         <div class="menu-item" v-if="v2.menus.length == 0">
                             <router-link 
                                 class="menu-link" 
@@ -198,7 +217,6 @@ export default {
                     },
                 })
                 let data = response.data.data;
-
                 // this.$cookies.set('menuData', this.$helper.encrypData(data))
                 this.menuAccess = data
 

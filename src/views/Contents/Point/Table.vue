@@ -1,6 +1,3 @@
-<script setup>
-    import Datatable from '@/components/Material/Datatable.vue'
-</script>
 <template>
     <!-- Table -->
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content" v-if="!toogle">
@@ -303,6 +300,7 @@
                                             fab dark small 
                                             variant="tonal" 
                                             :color="onSubmitColor"
+                                            :disabled="isLoading"
                                         >
                                             <template v-if="isLoading">
                                                 <v-progress-circular

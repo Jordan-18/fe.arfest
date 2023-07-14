@@ -19,6 +19,9 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import * as labs from 'vuetify/labs/components'
 
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 const app = createApp(App)
 
 async function main(){
@@ -32,6 +35,9 @@ async function main(){
             fixedHeader: true,
             noDataText: 'Results not found',
           },
+      },
+      theme: {
+        defaultTheme: localStorage.getItem('data-theme')
       },
       directives,
   })
@@ -66,6 +72,7 @@ async function main(){
   }
 
   app.component('model-select', ModelSelect)
+  app.component('VueDatePicker', VueDatePicker);
 
   for (const compoenent in globalComponent) {
     app.component(compoenent, globalComponent[compoenent])
