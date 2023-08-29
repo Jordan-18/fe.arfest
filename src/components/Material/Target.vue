@@ -1,6 +1,5 @@
 <template>
-  <!-- <div class="image-container"> -->
-  <div>
+  <div class="image-container">
     <img 
       ref="image" 
       src="@/assets/media/target.png" 
@@ -80,6 +79,7 @@ export default {
 <style>
 .image-container {
   position: relative;
+  max-height: 100% !important;
   display: inline-block;
 }
 
