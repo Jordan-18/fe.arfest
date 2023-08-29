@@ -1,5 +1,6 @@
 <template>
-  <div class="image-container">
+  <!-- <div class="image-container"> -->
+  <div>
     <img 
       ref="image" 
       src="@/assets/media/target.png" 
