@@ -54,7 +54,7 @@
                 auth: '&auth='+this.$dataAuth.user_id
             };
         },
-        mounted() { 
+        mounted() {
             this.index();
         },
         methods: {
